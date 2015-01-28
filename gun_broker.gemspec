@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = GunBroker::VERSION
   spec.authors       = ["Dale Campbell"]
   spec.email         = ["oshuma@gmail.com"]
-  spec.summary       = %q{GunBroker.com API library.}
+  spec.summary       = %q{GunBroker.com API Ruby library.}
   spec.description   = %q{}
   spec.homepage      = ""
   spec.license       = "MIT"
