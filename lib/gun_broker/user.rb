@@ -1,6 +1,8 @@
 module GunBroker
   class User
 
+    attr_reader :token
+
     def initialize(username, password)
       @username = username
       @password = password
@@ -8,7 +10,7 @@ module GunBroker
 
     def authenticate!
       response = GunBroker::API.post('/Users/AccessToken', { username: @username, password: @password })
-      raise 'Not yet implemented.'
+      @token = response['accessToken']
     end
 
   end
