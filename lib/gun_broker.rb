@@ -1,7 +1,8 @@
-require "gun_broker/version"
+require 'gun_broker/version'
 
-require "gun_broker/api"
-require "gun_broker/user"
+require 'gun_broker/api'
+require 'gun_broker/item'
+require 'gun_broker/user'
 
 module GunBroker
 

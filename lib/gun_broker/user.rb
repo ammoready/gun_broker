@@ -13,5 +13,16 @@ module GunBroker
       @token = response['accessToken']
     end
 
+    def items
+      response = GunBroker::API.get('/Items', { 'SellerName' => @username })
+      @items = []
+
+      response['results'].each do |result|
+        @items << GunBroker::Item.new(result)
+      end
+
+      @items
+    end
+
   end
 end
