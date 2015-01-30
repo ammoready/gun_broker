@@ -1,8 +1,8 @@
 module GunBroker
   class Error < StandardError
 
-    class NotAuthorized < StandardError; end
-    class RequestError < StandardError; end
+    class NotAuthorized < GunBroker::Error; end
+    class RequestError < GunBroker::Error; end
 
   end
 end
