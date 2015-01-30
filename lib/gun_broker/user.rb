@@ -23,13 +23,10 @@ module GunBroker
 
     def items
       response = GunBroker::API.get('/Items', { 'SellerName' => @username }, { 'X-AccessToken' => @token })
-      @items = []
 
-      response['results'].each do |result|
-        @items << GunBroker::Item.new(result)
+      response['results'].map do |result|
+        GunBroker::Item.new(result)
       end
-
-      @items
     end
 
   end
