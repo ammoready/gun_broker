@@ -4,10 +4,8 @@ describe GunBroker::User do
   let(:username) { 'test-user' }
   let(:password) { 'sekret-passw0rd' }
 
-  let(:headers) { { 'Content-Type' => 'application/json', 'X-DevKey' => GunBroker.dev_key } }
-
   before(:all) do
-    GunBroker.dev_key = 'random-dev-key'
+    GunBroker.dev_key = 'test-dev-key'
   end
 
   context '#authenticate!' do
@@ -45,7 +43,7 @@ describe GunBroker::User do
     end
   end
 
-  context 'deauthenticate!' do
+  context '#deauthenticate!' do
     let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/Users/AccessToken'].join }
 
     context 'on success' do
