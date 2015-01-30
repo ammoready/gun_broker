@@ -30,7 +30,7 @@ describe GunBroker::User do
     end
 
     context 'on failure' do
-      it 'should raise a GunBroker::Error::RequestError exception' do
+      it 'should raise a GunBroker::Error::NotAuthorized exception' do
         stub_request(:post, endpoint)
           .with(
             headers: headers,
@@ -38,7 +38,7 @@ describe GunBroker::User do
           ).to_return(body: response_fixture('not_authorized'), status: 401)
 
         user = GunBroker::User.new(username, password)
-        expect { user.authenticate! }.to raise_error(GunBroker::Error::RequestError)
+        expect { user.authenticate! }.to raise_error(GunBroker::Error::NotAuthorized)
       end
     end
   end
@@ -67,7 +67,7 @@ describe GunBroker::User do
           .with(headers: headers)
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
-        expect { user.deauthenticate! }.to raise_error(GunBroker::Error::RequestError)
+        expect { user.deauthenticate! }.to raise_error(GunBroker::Error::NotAuthorized)
       end
     end
   end
@@ -100,7 +100,7 @@ describe GunBroker::User do
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
         user = GunBroker::User.new(username, password)
-        expect { user.items }.to raise_error(GunBroker::Error::RequestError)
+        expect { user.items }.to raise_error(GunBroker::Error::NotAuthorized)
       end
     end
   end

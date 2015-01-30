@@ -44,7 +44,7 @@ describe GunBroker::Category do
           )
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
-        expect { GunBroker::Category.all }.to raise_error(GunBroker::Error::RequestError)
+        expect { GunBroker::Category.all }.to raise_error(GunBroker::Error::NotAuthorized)
       end
     end
   end
@@ -73,7 +73,7 @@ describe GunBroker::Category do
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
         id = attrs['categoryID']
-        expect { GunBroker::Category.find(id) }.to raise_error(GunBroker::Error::RequestError)
+        expect { GunBroker::Category.find(id) }.to raise_error(GunBroker::Error::NotAuthorized)
       end
     end
   end

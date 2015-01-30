@@ -67,6 +67,8 @@ module GunBroker
       case response
       when Net::HTTPOK, Net::HTTPSuccess
         JSON.parse(response.body)
+      when Net::HTTPUnauthorized
+        raise GunBroker::Error::NotAuthorized.new(response)
       else
         raise GunBroker::Error::RequestError.new(response)
       end
