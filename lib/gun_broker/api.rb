@@ -14,16 +14,16 @@ module GunBroker
       @headers = headers
     end
 
-    def self.delete(path, params, headers)
-      new(path, params, headers).delete!
+    def self.delete(*args)
+      new(*args).delete!
     end
 
-    def self.get(path, params)
-      new(path, params).get!
+    def self.get(*args)
+      new(*args).get!
     end
 
-    def self.post(path, params)
-      new(path, params).post!
+    def self.post(*args)
+      new(*args).post!
     end
 
     def delete!
