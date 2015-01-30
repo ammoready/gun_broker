@@ -3,9 +3,24 @@ require 'spec_helper'
 describe GunBroker::User do
   let(:username) { 'test-user' }
   let(:password) { 'sekret-passw0rd' }
+  let(:token)    { 'test-user-access-token' }
 
   before(:all) do
     GunBroker.dev_key = 'test-dev-key'
+  end
+
+  context '#initialize' do
+    context 'auth_options' do
+      it 'should accept a password' do
+        user = GunBroker::User.new(username, password: password)
+        expect(user.instance_variable_get(:@username)).to eq(username)
+      end
+
+      it 'should accept an access token' do
+        user = GunBroker::User.new(username, token: token)
+        expect(user.token).to eq(token)
+      end
+    end
   end
 
   context '#authenticate!' do
@@ -13,8 +28,6 @@ describe GunBroker::User do
 
     context 'on success' do
       it 'should set the access token' do
-        token    = 'random-user-access-token'
-
         stub_request(:post,  endpoint)
           .with(
             headers: headers,
@@ -22,7 +35,7 @@ describe GunBroker::User do
           )
           .to_return(body: { 'accessToken' => token }.to_json)
 
-        user = GunBroker::User.new(username, password)
+        user = GunBroker::User.new(username, password: password)
         user.authenticate!
 
         expect(user.token).to eq(token)
@@ -37,7 +50,7 @@ describe GunBroker::User do
             body: { username: username, password: password }
           ).to_return(body: response_fixture('not_authorized'), status: 401)
 
-        user = GunBroker::User.new(username, password)
+        user = GunBroker::User.new(username, password: password)
         expect { user.authenticate! }.to raise_error(GunBroker::Error::NotAuthorized)
       end
     end
@@ -48,7 +61,7 @@ describe GunBroker::User do
 
     context 'on success' do
       it 'should deactivate the current access token' do
-        user = GunBroker::User.new(username, password)
+        user = GunBroker::User.new(username, token: token)
 
         stub_request(:delete, endpoint)
           .with(headers: headers)
@@ -61,7 +74,7 @@ describe GunBroker::User do
 
     context 'on failure' do
       it 'should raise an exception' do
-        user = GunBroker::User.new(username, password)
+        user = GunBroker::User.new(username, token: token)
 
         stub_request(:delete, endpoint)
           .with(headers: headers)
@@ -79,12 +92,12 @@ describe GunBroker::User do
       it 'returns the User items' do
         stub_request(:get, endpoint)
           .with(
-            headers: headers,
+            headers: headers('X-AccessToken' => token),
             query: { 'SellerName' => username }
           )
           .to_return(body: response_fixture('items'))
 
-        user = GunBroker::User.new(username, password)
+        user = GunBroker::User.new(username, token: token)
         expect(user.items).not_to be_empty
         expect(user.items.first).to be_a(GunBroker::Item)
       end
@@ -94,12 +107,12 @@ describe GunBroker::User do
       it 'should raise an exception' do
         stub_request(:get, endpoint)
           .with(
-            headers: headers,
+            headers: headers('X-AccessToken' => token),
             query: { 'SellerName' => username }
           )
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
-        user = GunBroker::User.new(username, password)
+        user = GunBroker::User.new(username, token: token)
         expect { user.items }.to raise_error(GunBroker::Error::NotAuthorized)
       end
     end

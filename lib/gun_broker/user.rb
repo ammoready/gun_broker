@@ -1,11 +1,13 @@
 module GunBroker
   class User
 
+    attr_reader :username
     attr_reader :token
 
-    def initialize(username, password)
+    def initialize(username, auth_options = {})
       @username = username
-      @password = password
+      @password = auth_options[:password] || auth_options['password']
+      @token    = auth_options[:token]    || auth_options['token']
     end
 
     def authenticate!
@@ -20,7 +22,7 @@ module GunBroker
     end
 
     def items
-      response = GunBroker::API.get('/Items', { 'SellerName' => @username })
+      response = GunBroker::API.get('/Items', { 'SellerName' => @username }, { 'X-AccessToken' => @token })
       @items = []
 
       response['results'].each do |result|
