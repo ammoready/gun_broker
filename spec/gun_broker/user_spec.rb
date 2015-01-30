@@ -67,7 +67,7 @@ describe GunBroker::User do
           .with(headers: headers)
           .to_return(body: response_fixture('deauthenticate'))
 
-        user.deauthenticate!
+        expect(user.deauthenticate!).to eq(true)
         expect(user.token).to be_nil
       end
     end

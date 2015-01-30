@@ -19,6 +19,7 @@ module GunBroker
     def deauthenticate!
       GunBroker::API.delete('/Users/AccessToken', {}, { 'X-AccessToken' => @token })
       @token = nil
+      true  # Explicit `true` so this method won't return the `nil` set above.
     end
 
     def items
