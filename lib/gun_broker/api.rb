@@ -34,7 +34,7 @@ module GunBroker
       when Net::HTTPOK, Net::HTTPSuccess
         JSON.parse(response.body)
       else
-        raise "Something went wrong: #{response}"
+        raise GunBroker::Error::RequestError.new(response)
       end
     end
 
@@ -48,7 +48,7 @@ module GunBroker
       when Net::HTTPOK, Net::HTTPSuccess
         JSON.parse(response.body)
       else
-        raise "Something went wrong: #{response}"
+        raise GunBroker::Error::RequestError.new(response)
       end
     end
 
@@ -62,7 +62,7 @@ module GunBroker
       when Net::HTTPOK, Net::HTTPSuccess
         JSON.parse(response.body)
       else
-        raise "Something went wrong: #{response}"
+        raise GunBroker::Error::RequestError.new(response)
       end
     end
 

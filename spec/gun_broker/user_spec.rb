@@ -32,7 +32,16 @@ describe GunBroker::User do
     end
 
     context 'on failure' do
-      it 'should raise an exception'
+      it 'should raise a GunBroker::Error::RequestError exception' do
+        stub_request(:post, endpoint)
+          .with(
+            headers: headers,
+            body: { username: username, password: password }
+          ).to_return(body: response_fixture('not_authorized'), status: 401)
+
+        user = GunBroker::User.new(username, password)
+        expect { user.authenticate! }.to raise_error(GunBroker::Error::RequestError)
+      end
     end
   end
 
@@ -53,7 +62,15 @@ describe GunBroker::User do
     end
 
     context 'on failure' do
-      it 'should raise an exception'
+      it 'should raise an exception' do
+        user = GunBroker::User.new(username, password)
+
+        stub_request(:delete, endpoint)
+          .with(headers: headers)
+          .to_return(body: response_fixture('not_authorized'), status: 401)
+
+        expect { user.deauthenticate! }.to raise_error(GunBroker::Error::RequestError)
+      end
     end
   end
 
@@ -63,11 +80,11 @@ describe GunBroker::User do
     context 'on success' do
       it 'returns the User items' do
         stub_request(:get, endpoint)
-        .with(
-          headers: headers,
-          query: { 'SellerName' => username }
-        )
-        .to_return(body: response_fixture('items'))
+          .with(
+            headers: headers,
+            query: { 'SellerName' => username }
+          )
+          .to_return(body: response_fixture('items'))
 
         user = GunBroker::User.new(username, password)
         expect(user.items).not_to be_empty
@@ -76,7 +93,17 @@ describe GunBroker::User do
     end
 
     context 'on failure' do
-      it 'should raise an exception'
+      it 'should raise an exception' do
+        stub_request(:get, endpoint)
+          .with(
+            headers: headers,
+            query: { 'SellerName' => username }
+          )
+          .to_return(body: response_fixture('not_authorized'), status: 401)
+
+        user = GunBroker::User.new(username, password)
+        expect { user.items }.to raise_error(GunBroker::Error::RequestError)
+      end
     end
   end
 end
