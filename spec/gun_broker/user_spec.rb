@@ -117,4 +117,31 @@ describe GunBroker::User do
       end
     end
   end
+
+  context '#unsold_items' do
+    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/ItemsUnsold'].join }
+
+    context 'on success' do
+      it 'returns unsold Items' do
+        stub_request(:get, endpoint)
+          .with(headers: headers('X-AccessToken' => token))
+          .to_return(body: response_fixture('items'))
+
+        user = GunBroker::User.new(username, token: token)
+        expect(user.unsold_items).not_to be_empty
+        expect(user.unsold_items.first).to be_a(GunBroker::Item)
+      end
+    end
+
+    context 'on failure' do
+      it 'raises an exception' do
+        stub_request(:get, endpoint)
+          .with(headers: headers('X-AccessToken' => token))
+          .to_return(body: response_fixture('not_authorized'), status: 401)
+
+        user = GunBroker::User.new(username, token: token)
+        expect { user.unsold_items }.to raise_error(GunBroker::Error::NotAuthorized)
+      end
+    end
+  end
 end

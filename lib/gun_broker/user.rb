@@ -24,10 +24,12 @@ module GunBroker
 
     def items
       response = GunBroker::API.get('/Items', { 'SellerName' => @username }, { 'X-AccessToken' => @token })
+      response['results'].map { |result| GunBroker::Item.new(result) }
+    end
 
-      response['results'].map do |result|
-        GunBroker::Item.new(result)
-      end
+    def unsold_items
+      response = GunBroker::API.get('/ItemsUnsold', {}, { 'X-AccessToken' => @token })
+      response['results'].map { |result| GunBroker::Item.new(result) }
     end
 
   end
