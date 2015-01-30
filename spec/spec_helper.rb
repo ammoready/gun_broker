@@ -6,5 +6,6 @@ Dir['./spec/support/**/*.rb'].each { |support| require support }
 require 'gun_broker'
 
 RSpec.configure do |config|
-  config.include Fixtures
+  config.include GunBroker::Test::Fixtures
+  config.include GunBroker::Test::Headers
 end
