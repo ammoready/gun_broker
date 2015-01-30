@@ -29,13 +29,7 @@ module GunBroker
     def delete!
       request = Net::HTTP::Delete.new(uri)
       response = get_response(request)
-
-      case response
-      when Net::HTTPOK, Net::HTTPSuccess
-        JSON.parse(response.body)
-      else
-        raise GunBroker::Error::RequestError.new(response)
-      end
+      handle_response(response)
     end
 
     def get!
@@ -43,13 +37,7 @@ module GunBroker
 
       request = Net::HTTP::Get.new(uri)
       response = get_response(request)
-
-      case response
-      when Net::HTTPOK, Net::HTTPSuccess
-        JSON.parse(response.body)
-      else
-        raise GunBroker::Error::RequestError.new(response)
-      end
+      handle_response(response)
     end
 
     def post!
@@ -57,13 +45,7 @@ module GunBroker
       request.body = @params.to_json
 
       response = get_response(request)
-
-      case response
-      when Net::HTTPOK, Net::HTTPSuccess
-        JSON.parse(response.body)
-      else
-        raise GunBroker::Error::RequestError.new(response)
-      end
+      handle_response(response)
     end
 
     private
@@ -78,6 +60,15 @@ module GunBroker
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
         http.ssl_version = :SSLv3
         http.request(request)
+      end
+    end
+
+    def handle_response(response)
+      case response
+      when Net::HTTPOK, Net::HTTPSuccess
+        JSON.parse(response.body)
+      else
+        raise GunBroker::Error::RequestError.new(response)
       end
     end
 
