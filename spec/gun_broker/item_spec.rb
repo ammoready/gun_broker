@@ -9,4 +9,11 @@ describe GunBroker::Item do
     expect(item.id).to eq(attrs['itemID'])
   end
 
+  context '#[]' do
+    it 'should return the value from @attrs' do
+      item = GunBroker::Item.new(attrs)
+      attrs.each { |k, v| expect(item[k]).to eq(v) }
+    end
+  end
+
 end

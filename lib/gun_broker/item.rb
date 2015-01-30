@@ -9,5 +9,9 @@ module GunBroker
       @attrs['itemID']
     end
 
+    def [](key)
+      @attrs[key]
+    end
+
   end
 end
