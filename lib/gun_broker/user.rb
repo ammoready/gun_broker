@@ -13,6 +13,12 @@ module GunBroker
       @token = response['accessToken']
     end
 
+    # Sends a DELETE request to deactivate the current access token.
+    def deauthenticate!
+      GunBroker::API.delete('/Users/AccessToken', {}, { 'X-AccessToken' => @token })
+      @token = nil
+    end
+
     def items
       response = GunBroker::API.get('/Items', { 'SellerName' => @username })
       @items = []
