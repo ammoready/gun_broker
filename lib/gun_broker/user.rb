@@ -32,19 +32,19 @@ module GunBroker
       response = GunBroker::API.get('/ItemsUnsold', {}, { 'X-AccessToken' => @token })
       response['results'].map { |result| GunBroker::Item.new(result) }
     end
-    alias_method :unsold_items, :items_unsold
+    alias_method :unsold, :items_unsold
 
     def items_sold
       response = GunBroker::API.get('/ItemsSold', {}, { 'X-AccessToken' => @token })
       response['results'].map { |result| GunBroker::Item.new(result) }
     end
-    alias_method :sold_items, :items_sold
+    alias_method :sold, :items_sold
 
     def items_won
       response = GunBroker::API.get('/ItemsWon', {}, { 'X-AccessToken' => @token })
       response['results'].map { |result| GunBroker::Item.new(result) }
     end
-    alias_method :bought_items, :items_won
+    alias_method :bought, :items_won
 
   end
 end
