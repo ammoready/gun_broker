@@ -38,5 +38,10 @@ module GunBroker
       response['results'].map { |result| GunBroker::Item.new(result) }
     end
 
+    def items_won
+      response = GunBroker::API.get('/ItemsWon', {}, { 'X-AccessToken' => @token })
+      response['results'].map { |result| GunBroker::Item.new(result) }
+    end
+
   end
 end

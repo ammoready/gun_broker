@@ -52,6 +52,7 @@ return an array of `GunBroker::Item` instances.
 user.items  # => [GunBroker::Item, ...]
 user.items_unsold  # => [GunBroker::Item, ...]
 user.items_sold  # => [GunBroker::Item, ...]
+user.items_won  # => [GunBroker::Item, ...]
 ```
 
 To revoke the access token, call `User#deauthenticate!`.  This method is also aliased as `#revoke_access_token!`.
