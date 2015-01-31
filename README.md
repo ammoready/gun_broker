@@ -54,6 +54,14 @@ user.items_unsold  # => [GunBroker::Item, ...]
 user.items_sold  # => [GunBroker::Item, ...]
 ```
 
+To revoke the access token, call `User#deauthenticate!`.  This method is also aliased as `#revoke_access_token!`.
+
+```ruby
+user.token  # => 'user-access-token'
+user.deauthenticate!
+user.token  # => nil
+```
+
 ### GunBroker::Item
 
 Represents an item (listing) on GunBroker.  The `Item#id` method returns the value of the `itemID` attribute

@@ -21,6 +21,7 @@ module GunBroker
       @token = nil
       true  # Explicit `true` so this method won't return the `nil` set above.
     end
+    alias_method :revoke_access_token!, :deauthenticate!
 
     def items
       response = GunBroker::API.get('/Items', { 'SellerName' => @username }, { 'X-AccessToken' => @token })

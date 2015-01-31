@@ -83,6 +83,17 @@ describe GunBroker::User do
         expect { user.deauthenticate! }.to raise_error(GunBroker::Error::NotAuthorized)
       end
     end
+
+    it 'should have a #revoke_access_token! alias' do
+      user = GunBroker::User.new(username, token: token)
+
+      stub_request(:delete, endpoint)
+        .with(headers: headers)
+        .to_return(body: response_fixture('deauthenticate'))
+
+      expect(user.revoke_access_token!).to eq(true)
+      expect(user.token).to be_nil
+    end
   end
 
   context '#items' do
