@@ -23,6 +23,13 @@ describe GunBroker::User do
     end
   end
 
+  context '#token_header' do
+    it 'raises an error if @token nil' do
+      user = GunBroker::User.new(username, token: nil)
+      expect { user.items }.to raise_error(GunBroker::Error)
+    end
+  end
+
   context '#authenticate!' do
     let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/Users/AccessToken'].join }
 
