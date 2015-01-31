@@ -27,12 +27,12 @@ module GunBroker
       response['results'].map { |result| GunBroker::Item.new(result) }
     end
 
-    def unsold_items
+    def items_unsold
       response = GunBroker::API.get('/ItemsUnsold', {}, { 'X-AccessToken' => @token })
       response['results'].map { |result| GunBroker::Item.new(result) }
     end
 
-    def sold_items
+    def items_sold
       response = GunBroker::API.get('/ItemsSold', {}, { 'X-AccessToken' => @token })
       response['results'].map { |result| GunBroker::Item.new(result) }
     end

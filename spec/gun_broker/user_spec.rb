@@ -118,7 +118,7 @@ describe GunBroker::User do
     end
   end
 
-  context '#unsold_items' do
+  context '#items_unsold' do
     let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/ItemsUnsold'].join }
 
     context 'on success' do
@@ -128,8 +128,8 @@ describe GunBroker::User do
           .to_return(body: response_fixture('items'))
 
         user = GunBroker::User.new(username, token: token)
-        expect(user.unsold_items).not_to be_empty
-        expect(user.unsold_items.first).to be_a(GunBroker::Item)
+        expect(user.items_unsold).not_to be_empty
+        expect(user.items_unsold.first).to be_a(GunBroker::Item)
       end
     end
 
@@ -140,12 +140,12 @@ describe GunBroker::User do
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
         user = GunBroker::User.new(username, token: token)
-        expect { user.unsold_items }.to raise_error(GunBroker::Error::NotAuthorized)
+        expect { user.items_unsold }.to raise_error(GunBroker::Error::NotAuthorized)
       end
     end
   end
 
-  context '#sold_items' do
+  context '#items_sold' do
     let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/ItemsSold'].join }
 
     context 'on success' do
@@ -155,8 +155,8 @@ describe GunBroker::User do
           .to_return(body: response_fixture('items'))
 
         user = GunBroker::User.new(username, token: token)
-        expect(user.sold_items).not_to be_empty
-        expect(user.sold_items.first).to be_a(GunBroker::Item)
+        expect(user.items_sold).not_to be_empty
+        expect(user.items_sold.first).to be_a(GunBroker::Item)
       end
     end
 
@@ -167,7 +167,7 @@ describe GunBroker::User do
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
         user = GunBroker::User.new(username, token: token)
-        expect { user.sold_items }.to raise_error(GunBroker::Error::NotAuthorized)
+        expect { user.items_sold }.to raise_error(GunBroker::Error::NotAuthorized)
       end
     end
   end

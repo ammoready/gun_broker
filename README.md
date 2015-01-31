@@ -50,8 +50,8 @@ return an array of `GunBroker::Item` instances.
 
 ```ruby
 user.items  # => [GunBroker::Item, ...]
-user.unsold_items  # => [GunBroker::Item, ...]
-user.sold_items  # => [GunBroker::Item, ...]
+user.items_unsold  # => [GunBroker::Item, ...]
+user.items_sold  # => [GunBroker::Item, ...]
 ```
 
 ### GunBroker::Item
