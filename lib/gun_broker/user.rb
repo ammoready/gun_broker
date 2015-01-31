@@ -40,6 +40,12 @@ module GunBroker
     end
     alias_method :sold, :items_sold
 
+    def items_bid_on
+      response = GunBroker::API.get('/ItemsBidOn', {}, { 'X-AccessToken' => @token })
+      response['results'].map { |result| GunBroker::Item.new(result) }
+    end
+    alias_method :buying, :items_bid_on
+
     def items_won
       response = GunBroker::API.get('/ItemsWon', {}, { 'X-AccessToken' => @token })
       response['results'].map { |result| GunBroker::Item.new(result) }
