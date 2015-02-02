@@ -20,6 +20,10 @@ Or install it yourself as:
 
 ## Usage
 
+### Documentation
+
+The full documentation is located here: http://www.rubydoc.info/github/ammoready/gun_broker
+
 ### Developer Token
 
 You **must** set a developer key obtained from GunBroker.com in order to use this library.

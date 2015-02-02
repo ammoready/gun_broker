@@ -122,7 +122,18 @@ describe GunBroker::User do
     end
 
     context 'on failure' do
-      it 'raises an exception'
+      it 'raises an exception' do
+        user = GunBroker::User.new(username, token: token)
+
+        stub_request(:get, endpoint)
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 'UserName' => user.username }
+          )
+          .to_return(body: response_fixture('empty'), status: 401)
+
+        expect { user.contact_info }.to raise_error(GunBroker::Error::NotAuthorized)
+      end
     end
   end
 
