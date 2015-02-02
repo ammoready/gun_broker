@@ -103,6 +103,29 @@ describe GunBroker::User do
     end
   end
 
+  context '#contact_info' do
+    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/Users/ContactInfo'].join }
+
+    context 'on success' do
+      it 'returns a contact info hash' do
+        user = GunBroker::User.new(username, token: token)
+
+        stub_request(:get, endpoint)
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 'UserName' => user.username }
+          )
+          .to_return(body: response_fixture('contact_info'))
+
+        expect(user.contact_info).to eq(JSON.parse(response_fixture('contact_info')))
+      end
+    end
+
+    context 'on failure' do
+      it 'raises an exception'
+    end
+  end
+
   context '#items' do
     let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/Items'].join }
 

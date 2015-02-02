@@ -23,6 +23,10 @@ module GunBroker
     end
     alias_method :revoke_access_token!, :deauthenticate!
 
+    def contact_info
+      GunBroker::API.get('/Users/ContactInfo', { 'UserName' => @username }, token_header)
+    end
+
     def items
       response = GunBroker::API.get('/Items', { 'SellerName' => @username }, token_header)
       items_from_results(response['results'])
