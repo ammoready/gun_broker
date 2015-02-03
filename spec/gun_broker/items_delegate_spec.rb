@@ -65,6 +65,66 @@ describe GunBroker::ItemsDelegate do
     end
   end
 
+  context '#find' do
+    let(:attrs) { JSON.parse(response_fixture('item')) }
+    let(:all_endpoint) { [GunBroker::API::GUNBROKER_API, '/Items'].join }
+    let(:endpoint) { [GunBroker::API::GUNBROKER_API, "/Items/#{attrs['itemID']}"].join }
+
+    it 'returns a single Item' do
+      # First, stub the '/Items' request, since we have to use that to scope the Item find by user.
+      stub_request(:get, all_endpoint)
+        .with(
+          headers: headers('X-AccessToken' => token),
+          query: { 'SellerName' => user.username }
+        )
+        .to_return(body: response_fixture('items'))
+
+      # Now we stub the '/Items/:id' request.
+      stub_request(:get, endpoint)
+        .with(headers: headers)
+        .to_return(body: response_fixture('item'))
+
+      item = delegate.find(attrs['itemID'])
+      expect(item).to be_a(GunBroker::Item)
+      expect(item.id).to eq(attrs['itemID'])
+    end
+
+    it 'returns nil if no item found' do
+      stub_request(:get, all_endpoint)
+        .with(
+          headers: headers('X-AccessToken' => token),
+          query: { 'SellerName' => user.username }
+        )
+        .to_return(body: response_fixture('items'))
+
+      expect(delegate.find(666)).to be_nil
+    end
+  end
+
+  context '#find!' do
+    let(:all_endpoint) { [GunBroker::API::GUNBROKER_API, '/Items'].join }
+
+    it 'calls #find' do
+      item_id = 123
+      expect(delegate).to receive(:find).with(item_id).and_return(true)
+      delegate.find!(item_id)
+    end
+
+    it 'raises GunBroker::Error::NotFound if no item found' do
+      stub_request(:get, all_endpoint)
+        .with(
+          headers: headers('X-AccessToken' => token),
+          query: { 'SellerName' => user.username }
+        )
+        .to_return(body: response_fixture('items'))
+
+      item_id = 123
+      expect {
+        delegate.find!(item_id)
+      }.to raise_error(GunBroker::Error::NotFound)
+    end
+  end
+
   context '#not_won' do
     let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/ItemsNotWon'].join }
 

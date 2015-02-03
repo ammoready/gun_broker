@@ -21,6 +21,23 @@ module GunBroker
       items_from_results(response['results'])
     end
 
+    # Finds a specific user's Item by ID.
+    def find(item_id)
+      # HACK: This has to filter through `#all`, since the GunBroker API currently has no way to scope the `/Items/{itemID}` endpoint by user.
+      if all.select { |item| item.id.to_s == item_id.to_s }.first
+        GunBroker::Item.find(item_id)
+      else
+        nil
+      end
+    end
+
+    # Same as `#find` but raises GunBroker::Error::NotFound if no item is found.
+    def find!(item_id)
+      item = find(item_id)
+      raise GunBroker::Error::NotFound.new("Couldn't find item with ID '#{item_id}'") if item.nil?
+      item
+    end
+
     # GET /ItemsNotWon
     def not_won
       response = GunBroker::API.get('/ItemsNotWon', {}, token_header(@user.token))
