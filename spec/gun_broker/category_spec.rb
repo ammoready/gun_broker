@@ -17,6 +17,13 @@ describe GunBroker::Category do
     expect(category.id).to eq(attrs['categoryID'])
   end
 
+  context '#[]' do
+    it 'should return the value from @attrs' do
+      category = GunBroker::Category.new(attrs)
+      attrs.each { |k, v| expect(category[k]).to eq(v) }
+    end
+  end
+
   context '.all' do
     let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/Categories'].join }
 

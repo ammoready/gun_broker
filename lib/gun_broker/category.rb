@@ -21,5 +21,9 @@ module GunBroker
       @attrs['categoryID']
     end
 
+    def [](key)
+      @attrs[key]
+    end
+
   end
 end
