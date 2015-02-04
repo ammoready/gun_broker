@@ -71,8 +71,8 @@ module GunBroker
       @headers.each { |header, value| request[header] = value }
 
       Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        http.ssl_version = :SSLv3
+        http.ssl_version = :TLSv1
+        http.ciphers = ['RC4-SHA']
         http.request(request)
       end
     end
