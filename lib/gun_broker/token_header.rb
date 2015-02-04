@@ -1,4 +1,5 @@
 module GunBroker
+  # Holds helper methods dealing with a User's {User#token access token}.
   module TokenHeader
 
     protected

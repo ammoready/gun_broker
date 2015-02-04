@@ -22,7 +22,7 @@ Or install it yourself as:
 
 ### Documentation
 
-The full documentation is located here: http://www.rubydoc.info/github/ammoready/gun_broker
+The full documentation is located here: http://www.rubydoc.info/gems/gun_broker
 
 ### Developer Token
 

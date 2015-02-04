@@ -9,12 +9,17 @@ require 'gun_broker/user'
 
 module GunBroker
 
+  # Sets the developer key obtained from GunBroker.com.
+  # @param dev_key [String]
   def self.dev_key=(dev_key)
     @@dev_key = dev_key
   end
 
+  # Returns the set developer key, or raises GunBroker::Error if not set.
+  # @raise [GunBroker::Error] If the {.dev_key} has not been set.
+  # @return [String] The developer key.
   def self.dev_key
-    raise 'GunBroker developer key not set.' unless dev_key_present?
+    raise GunBroker::Error.new('GunBroker developer key not set.') unless dev_key_present?
     @@dev_key
   end
 
