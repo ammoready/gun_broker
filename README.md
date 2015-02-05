@@ -34,8 +34,10 @@ GunBroker.dev_key = 'your-sekret-dev-key'
 
 ### GunBroker::User
 
-Authentication requires a `username` and an 'auth options' hash that requires **at least** a `password`
-*or* `token`. If a password is given, you must call `User#authenticate!` to obtain an access token.
+#### Authentication
+
+Authentication requires a `username` and an 'auth options' hash that requires **at least** a `:password`
+*or* `:token`. If a password is given, you must call `User#authenticate!` to obtain an access token.
 
 ```ruby
 # By username/password:
@@ -49,16 +51,6 @@ user = GunBroker::User.new('username', token: 'user-access-token')
 user.token  # => 'user-access-token'
 ```
 
-Once the User has an access token, you can then grab all of their items (listings).  All items methods
-return an array of `GunBroker::Item` instances.
-
-```ruby
-user.items.all     # => [GunBroker::Item, ...]
-user.items.unsold  # => [GunBroker::Item, ...]
-user.items.sold    # => [GunBroker::Item, ...]
-user.items.won     # => [GunBroker::Item, ...]
-```
-
 To revoke the access token, call `User#deauthenticate!`.  This method is also aliased as `#revoke_access_token!`.
 
 ```ruby
@@ -67,6 +59,24 @@ user.deauthenticate!
 user.token  # => nil
 ```
 
+#### Items
+
+You can access a User's Items through the `User#items` method, which returns an instance of `User::ItemsDelegate`.
+
+```ruby
+user.items.all   # => [GunBroker::Item, ...]
+user.items.sold  # => [GunBroker::Item, ...]
+```
+
+To find a specific Item by its ID, use `#find`. This will return a `GunBroker::Item` instance or `nil` if no item found.
+
+```ruby
+item = user.items.find(123)
+```
+
+To raise a `GunBroker::Error::NotFound` exception if no Item can be found, use `#find!`.
+
+
 ### GunBroker::Item
 
 Represents an item (listing) on GunBroker.  The `Item#id` method returns the value of the `itemID` attribute
@@ -74,8 +84,23 @@ from the response.  All other attributes can be accessed through the `Item#[]` m
 
 ```ruby
 item.id  # => '1234567'
-item['title']  # => 'Super Awesome Scope'
+item.title  # => 'Super Awesome Scope'
+item.category  # => GunBroker::Category
+item['description']  # => 'This scope is really awesome.'
 ```
+
+You can find an Item belonging to the authenticated User with `user.items.find` or any Item with `Item.find`.
+
+```ruby
+# Returns the Item or nil, if the User has no Item with that ID.
+user.items.find(123)
+
+# Find any Item by its ID.
+GunBroker::Item.find(123)
+```
+
+To raise a `GunBroker::Error::NotFound` exception if no Item can be found, use `Item.find!`.
+
 
 ### GunBroker::Category
 
@@ -95,12 +120,22 @@ GunBroker::Category.all(firearms)
 # => [GunBroker::Category, ...]
 ```
 
+To find a Category by a specific ID, use either `Category.find` or `Category.find!`.
+
+```ruby
+GunBroker::Category.find(123)
+# => Returns the Category or nil
+GunBroker::Category.find!(123)
+# => Returns the Category or raises GunBroker::Error::NotFound
+```
+
 Much like GunBroker::Item, the `Category#id` method returns the `categoryID` attribute from the response.
 All other attributes can be accessed with `Category#[]`.
 
 ```ruby
 category.id  # => '123'
-category['categoryName']  # => 'Firearms'
+category.name  # => 'Firearms'
+category['description']  # => 'Modern Firearms are defined ...'
 ```
 
 ### GunBroker::API
