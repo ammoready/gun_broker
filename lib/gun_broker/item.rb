@@ -1,6 +1,10 @@
+require 'gun_broker/item_constants'
+
 module GunBroker
   # Represents a GunBroker item (listing).
   class Item
+
+    include GunBroker::Item::Constants
 
     # @return [Hash] Attributes parsed from the JSON response.
     attr_reader :attrs
