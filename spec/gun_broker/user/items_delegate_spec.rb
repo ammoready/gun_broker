@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe GunBroker::ItemsDelegate do
+describe GunBroker::User::ItemsDelegate do
   let(:username) { 'test-user' }
   let(:token)    { 'test-user-access-token' }
 
   let(:user)     { GunBroker::User.new(username, token: token) }
-  let(:delegate) { GunBroker::ItemsDelegate.new(user) }
+  let(:delegate) { GunBroker::User::ItemsDelegate.new(user) }
 
   context '#all' do
     let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/Items'].join }

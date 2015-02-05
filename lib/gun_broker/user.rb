@@ -1,4 +1,5 @@
 require 'gun_broker/token_header'
+require 'gun_broker/user/items_delegate'
 
 module GunBroker
   # Represents a GunBroker User.

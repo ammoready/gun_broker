@@ -140,7 +140,7 @@ describe GunBroker::User do
   context '#items' do
     it 'should return an ItemsDelegate instance' do
       user = GunBroker::User.new(username, token: token)
-      expect(user.items).to be_a(GunBroker::ItemsDelegate)
+      expect(user.items).to be_a(GunBroker::User::ItemsDelegate)
     end
   end
 

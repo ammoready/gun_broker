@@ -1,4 +1,4 @@
-require 'gun_broker/item_constants'
+require 'gun_broker/item/constants'
 
 module GunBroker
   # Represents a GunBroker item (listing).

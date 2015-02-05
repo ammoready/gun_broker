@@ -4,7 +4,6 @@ require 'gun_broker/api'
 require 'gun_broker/category'
 require 'gun_broker/error'
 require 'gun_broker/item'
-require 'gun_broker/items_delegate'
 require 'gun_broker/user'
 
 module GunBroker
