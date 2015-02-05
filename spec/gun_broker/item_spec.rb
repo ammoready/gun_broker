@@ -21,6 +21,12 @@ describe GunBroker::Item do
     end
   end
 
+  context '#title' do
+    it 'should return the item title' do
+      expect(item.title).to eq(attrs['title'])
+    end
+  end
+
   context '.find' do
     let(:endpoint) { [GunBroker::API::GUNBROKER_API, "/Items/#{attrs['itemID']}"].join }
 

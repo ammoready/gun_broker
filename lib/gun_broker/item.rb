@@ -26,6 +26,11 @@ module GunBroker
       @attrs
     end
 
+    # @return [String] Title of this Item.
+    def title
+      @attrs['title']
+    end
+
     # @param key [String] An Item attribute name (from the JSON response).
     # @return The value of the given `key` or `nil`.
     def [](key)
