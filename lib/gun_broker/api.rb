@@ -83,6 +83,8 @@ module GunBroker
         JSON.parse(response.body)
       when Net::HTTPUnauthorized
         raise GunBroker::Error::NotAuthorized.new(response)
+      when Net::HTTPNotFound
+        raise GunBroker::Error::NotFound.new(response)
       else
         raise GunBroker::Error::RequestError.new(response)
       end
