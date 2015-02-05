@@ -3,6 +3,7 @@ require 'spec_helper'
 describe GunBroker::Category do
 
   let(:attrs) { JSON.parse(response_fixture('category')) }
+  let(:category) { GunBroker::Category.new(attrs) }
 
   before(:all) do
     GunBroker.dev_key = 'test-dev-key'
@@ -13,13 +14,15 @@ describe GunBroker::Category do
   end
 
   it 'should have an #id' do
-    category = GunBroker::Category.new(attrs)
     expect(category.id).to eq(attrs['categoryID'])
+  end
+
+  it 'should have a #name' do
+    expect(category.name).to eq(attrs['categoryName'])
   end
 
   context '#[]' do
     it 'should return the value from @attrs' do
-      category = GunBroker::Category.new(attrs)
       attrs.each { |k, v| expect(category[k]).to eq(v) }
     end
   end

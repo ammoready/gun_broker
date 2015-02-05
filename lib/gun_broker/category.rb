@@ -38,6 +38,11 @@ module GunBroker
       @attrs['categoryID']
     end
 
+    # @return [String] The Category name.
+    def name
+      @attrs['categoryName']
+    end
+
     # @param key [String] A Category attribute name (from the JSON response).
     # @return The value of the given `key` or `nil`.
     def [](key)
