@@ -2,6 +2,9 @@ module GunBroker
   # Represents a GunBroker item (listing).
   class Item
 
+    # @return [Hash] Attributes parsed from the JSON response.
+    attr_reader :attrs
+
     # @param item_id [Integer, String] The ID of the Item to find.
     # @return [Item] An Item instance.
     def self.find(item_id)
@@ -16,6 +19,11 @@ module GunBroker
     # @return [Integer] The Item ID.
     def id
       @attrs['itemID']
+    end
+
+    # @return [Hash] Attributes parsed from the JSON response.
+    def attributes
+      @attrs
     end
 
     # @param key [String] An Item attribute name (from the JSON response).
