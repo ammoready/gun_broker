@@ -21,6 +21,19 @@ describe GunBroker::Item do
     end
   end
 
+  context '#category' do
+    it 'should return the Category' do
+      # Mock up the Category.
+      category = GunBroker::Category.new({
+        'categoryID' => attrs['categoryID'],
+        'categoryName' => attrs['categoryName'],
+      })
+
+      expect(GunBroker::Category).to receive(:find).with(attrs['categoryID']).and_return(category)
+      expect(item.category).to eq(category)
+    end
+  end
+
   context '#title' do
     it 'should return the item title' do
       expect(item.title).to eq(attrs['title'])

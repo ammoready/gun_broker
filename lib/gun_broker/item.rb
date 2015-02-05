@@ -40,6 +40,11 @@ module GunBroker
       @attrs
     end
 
+    # @return [Category] This Items Category.
+    def category
+      GunBroker::Category.find(@attrs['categoryID'])
+    end
+
     # @return [String] Title of this Item.
     def title
       @attrs['title']
