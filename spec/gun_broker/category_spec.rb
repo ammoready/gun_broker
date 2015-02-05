@@ -74,13 +74,42 @@ describe GunBroker::Category do
     end
 
     context 'on failure' do
-      it 'should raise a GunBroker::Error::RequestError exception' do
+      it 'should return nil' do
         stub_request(:get, endpoint)
           .with(headers: headers)
-          .to_return(body: response_fixture('not_authorized'), status: 401)
+          .to_return(body: response_fixture('not_authorized'), status: 404)
 
         id = attrs['categoryID']
-        expect { GunBroker::Category.find(id) }.to raise_error(GunBroker::Error::NotAuthorized)
+        expect(GunBroker::Category.find(id)).to be_nil
+      end
+    end
+  end
+
+  context '.find!' do
+    let(:attrs) { JSON.parse(response_fixture('category')) }
+    let(:endpoint) { [GunBroker::API::GUNBROKER_API, "/Categories/#{attrs['categoryID']}"].join }
+
+    context 'on success' do
+      it 'returns the Category' do
+        stub_request(:get, endpoint)
+          .with(headers: headers)
+          .to_return(body: response_fixture('category'))
+
+        id = attrs['categoryID']
+        category = GunBroker::Category.find!(id)
+        expect(category).to be_a(GunBroker::Category)
+        expect(category.id).to eq(id)
+      end
+    end
+
+    context 'on failure' do
+      it 'should raise a GunBroker::Error::NotFound exception' do
+        stub_request(:get, endpoint)
+          .with(headers: headers)
+          .to_return(body: response_fixture('not_authorized'), status: 404)
+
+        id = attrs['categoryID']
+        expect { GunBroker::Category.find!(id) }.to raise_error(GunBroker::Error::NotFound)
       end
     end
   end

@@ -13,8 +13,18 @@ module GunBroker
     end
 
     # @param category_id [Integer, String] The ID of the Category to find.
-    # @return [Category] A Category instance.
+    # @return [Category] A Category instance or `nil` if no Category with `category_id` exists.
     def self.find(category_id)
+      find!(category_id)
+    rescue GunBroker::Error::NotFound
+      nil
+    end
+
+    # Same as {.find} but raises GunBroker::Error::NotFound if no Category is found.
+    # @param (see .find)
+    # @raise [GunBroker::Error::NotFound] If no Category with `category_id` exists.
+    # @return (see .find)
+    def self.find!(category_id)
       new(GunBroker::API.get("/Categories/#{category_id}"))
     end
 

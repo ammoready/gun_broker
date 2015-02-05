@@ -17,7 +17,7 @@ module GunBroker
       nil
     end
 
-    # Same as {.find} but raises GunBroker::Error::NotFound if no item is found.
+    # Same as {.find} but raises GunBroker::Error::NotFound if no Item is found.
     # @param (see .find)
     # @raise [GunBroker::Error::NotFound] If no Item with `item_id` exists.
     # @return (see .find)
