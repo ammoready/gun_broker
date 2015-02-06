@@ -104,7 +104,7 @@ To raise a `GunBroker::Error::NotFound` exception if no Item can be found, use `
 
 ### GunBroker::Category
 
-Returns GunBroker category responses.  To get an array of all categories, call `Category#all()`.
+Returns GunBroker category responses.  To get an array of all categories, call `Category.all`.
 
 ```ruby
 GunBroker::Category.all
@@ -168,8 +168,9 @@ GunBroker::API.delete('/some/resource', {}, { 'X-TestHeader' => 'FooBar' })
 ### Error Handling
 
 Methods that require authorization (with an access token) will raise a `GunBroker::Error::NotAuthorized`
-exception if the token isn't valid.  Otherwise, if there is some other issue with the request (namely,
-the response status code is not in the `2xx` range), a `GunBroker::Error::RequestError` will be raised.
+exception if the token isn't valid.  If the response is an HTTP `404` status, a `GunBroker::Error::NotFound`
+will be raised.  Otherwise, if there is some other issue with the request (namely, the response status
+code is not in the `2xx` range), a `GunBroker::Error::RequestError` will be raised.
 
 ## Contributing
 
