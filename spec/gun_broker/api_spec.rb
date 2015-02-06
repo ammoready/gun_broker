@@ -15,6 +15,10 @@ describe GunBroker::API do
     expect(GunBroker::API::GUNBROKER_API).not_to be_nil
   end
 
+  it "raises GunBroker::Error if path does not start with '/'" do
+    expect { GunBroker::API.new('foo/bar') }.to raise_error(GunBroker::Error)
+  end
+
   context '.delete' do
     context 'on success' do
       it 'returns JSON parsed response' do

@@ -12,7 +12,7 @@ module GunBroker
     # @param params [Hash] (optional) URL params for GET requests; form params for POST request.
     # @param headers [Hash] (optional) Additional headers sent with the request.
     def initialize(path, params = {}, headers = {})
-      raise "Path must start with '/': #{path}" unless path.start_with?('/')
+      raise GunBroker::Error.new("Path must start with '/': #{path}") unless path.start_with?('/')
 
       @path = path
       @params = params
