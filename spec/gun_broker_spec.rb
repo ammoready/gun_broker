@@ -25,4 +25,23 @@ describe GunBroker do
     end
   end
 
+  context '.time' do
+    before(:all) do
+      GunBroker.dev_key = 'test-dev-key'
+    end
+
+    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/GunBrokerTime'].join }
+    let(:response) { JSON.parse(response_fixture('time')) }
+
+    it 'should return the GunBroker time' do
+      stub_request(:get, endpoint)
+        .with(headers: headers)
+        .to_return(body: response_fixture('time'))
+
+      time = GunBroker.time
+      expect(time['gunBrokerTime']).to eq(response['gunBrokerTime'])
+      expect(time['gunBrokerVersion']).to eq(response['gunBrokerVersion'])
+    end
+  end
+
 end

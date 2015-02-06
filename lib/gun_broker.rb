@@ -22,6 +22,21 @@ module GunBroker
     @@dev_key
   end
 
+  # Returns a hash containing the time on GunBroker's servers in UTC
+  # and the current version of the GunBroker API.
+  #
+  # For example:
+  #
+  #     {
+  #       "gunBrokerTime" => "2015-02-06T20:23:08Z",
+  #       "gunBrokerVersion" => "6 4.4.2.12"
+  #     }
+  #
+  # @return [Hash] Containing the time and API version.
+  def self.time
+    GunBroker::API.get('/GunBrokerTime')
+  end
+
   private
 
   def self.dev_key_present?
