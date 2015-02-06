@@ -46,7 +46,7 @@ describe GunBroker::Category do
     end
 
     context 'on failure' do
-      it 'should raise a GunBroker::Error::RequestError exception' do
+      it 'should raise a GunBroker::Error::NotAuthorized exception' do
         stub_request(:get, endpoint)
           .with(
             headers: headers,
