@@ -41,7 +41,7 @@ module GunBroker
     def delete!
       request = Net::HTTP::Delete.new(uri)
       response = get_response(request)
-      handle_response(response)
+      GunBroker::Response.new(response)
     end
 
     # Sends a GET request to the given `path`.
@@ -50,7 +50,7 @@ module GunBroker
 
       request = Net::HTTP::Get.new(uri)
       response = get_response(request)
-      handle_response(response)
+      GunBroker::Response.new(response)
     end
 
     # Sends a POST request to the given `path`.
@@ -59,7 +59,7 @@ module GunBroker
       request.body = @params.to_json
 
       response = get_response(request)
-      handle_response(response)
+      GunBroker::Response.new(response)
     end
 
     private
@@ -74,19 +74,6 @@ module GunBroker
         http.ssl_version = :TLSv1
         http.ciphers = ['RC4-SHA']
         http.request(request)
-      end
-    end
-
-    def handle_response(response)
-      case response
-      when Net::HTTPOK, Net::HTTPSuccess
-        JSON.parse(response.body)
-      when Net::HTTPUnauthorized
-        raise GunBroker::Error::NotAuthorized.new(response)
-      when Net::HTTPNotFound
-        raise GunBroker::Error::NotFound.new(response)
-      else
-        raise GunBroker::Error::RequestError.new(response)
       end
     end
 

@@ -117,7 +117,8 @@ describe GunBroker::User do
           )
           .to_return(body: response_fixture('contact_info'))
 
-        expect(user.contact_info).to eq(JSON.parse(response_fixture('contact_info')))
+        contact_info = JSON.parse(response_fixture('contact_info'))
+        expect(user.contact_info['userID']).to eq(contact_info['userID'])
       end
     end
 

@@ -7,6 +7,8 @@ describe GunBroker::API do
   let(:path)     { '/some/resource' }
   let(:endpoint) { [GunBroker::API::GUNBROKER_API, path].join }
 
+  let(:test_response) { JSON.parse(response_fixture('test')) }
+
   before(:all) do
     GunBroker.dev_key = 'test-dev-key'
   end
@@ -19,15 +21,25 @@ describe GunBroker::API do
     expect { GunBroker::API.new('foo/bar') }.to raise_error(GunBroker::Error)
   end
 
+  context 'response' do
+    it 'should return an instance of GunBroker::Response' do
+      stub_request(:get, endpoint)
+        .to_return(body: response_fixture('test'))
+
+      response = GunBroker::API.get(path)
+      expect(response).to be_a(GunBroker::Response)
+    end
+  end
+
   context '.delete' do
     context 'on success' do
       it 'returns JSON parsed response' do
         stub_request(:delete, endpoint)
           .with(headers: headers('X-AccessToken' => token))
-          .to_return(body: response_fixture('deauthenticate'))
+          .to_return(body: response_fixture('test'))
 
         response = GunBroker::API.delete(path, {}, headers('X-AccessToken' => token))
-        expect(response).to eq(JSON.parse(response_fixture('deauthenticate')))
+        expect(response['test']).to eq(test_response['test'])
       end
     end
 
@@ -48,10 +60,10 @@ describe GunBroker::API do
       it 'returns JSON parsed response' do
         stub_request(:get, endpoint)
           .with(query: { 'SellerName' => 'test-user' })
-          .to_return(body: response_fixture('items'))
+          .to_return(body: response_fixture('test'))
 
         response = GunBroker::API.get(path, { 'SellerName' => 'test-user' })
-        expect(response).to eq(JSON.parse(response_fixture('items')))
+        expect(response['test']).to eq(test_response['test'])
       end
     end
 
@@ -74,10 +86,12 @@ describe GunBroker::API do
             headers: headers,
             body: { username: 'test-user' }
           )
-          .to_return(body: response_fixture('authenticate'))
+          .to_return(body: response_fixture('test'))
 
         response = GunBroker::API.post(path, { username: 'test-user' }, headers)
-        expect(response).to eq(JSON.parse(response_fixture('authenticate')))
+
+        expect(response).to be_a(GunBroker::Response)
+        expect(response['test']).to eq(test_response['test'])
       end
     end
 
