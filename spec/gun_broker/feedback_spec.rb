@@ -6,12 +6,27 @@ describe GunBroker::Feedback do
 
   let(:user_id) { 123 }
   let(:endpoint) { [GunBroker::API::GUNBROKER_API, "/Feedback/#{user_id}"].join }
+  let(:summary_endpoint) { [GunBroker::API::GUNBROKER_API, "/Feedback/Summary/#{user_id}"].join }
 
   context '.all' do
     it 'returns an array of the user feedback' do
       stub_request(:get, endpoint)
         .with(headers: headers)
         .to_return(body: response_fixture('feedback'))
+
+      feedback = GunBroker::Feedback.all(user_id)
+      expect(feedback.first).to be_a(GunBroker::Feedback)
+    end
+  end
+
+  context '.summary' do
+    it 'returns an array of the user feedback' do
+      stub_request(:get, summary_endpoint)
+        .with(headers: headers)
+        .to_return(body: response_fixture('feedback-summary'))
+
+      summary = GunBroker::Feedback.summary(user_id)
+      expect(summary).to be_a(GunBroker::Response)
     end
   end
 

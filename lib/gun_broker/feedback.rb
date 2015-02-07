@@ -6,6 +6,10 @@ module GunBroker
       response['results'].map { |attrs| new(attrs) }
     end
 
+    def self.summary(user_id)
+      GunBroker::API.get("/Feedback/Summary/#{user_id}")
+    end
+
     def initialize(attrs = {})
       @attrs = attrs
     end

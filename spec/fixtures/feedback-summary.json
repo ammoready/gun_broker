@@ -1,0 +1,27 @@
+{
+    "isUserRegistered": true,
+    "links": [
+        {
+            "href": "https://api.gunbroker.com/v1/feedback/123",
+            "rel": "details",
+            "title": "test-user",
+            "verb": "GET"
+        }
+    ],
+    "negativeFeedback120Days": 0,
+    "negativeFeedback30Days": 0,
+    "negativeFeedback60Days": 0,
+    "negativeFeedback90Days": 0,
+    "negativeFeedbackPoints": 1,
+    "neutralFeedbackPoints": 0,
+    "positiveFeedbackPercentage": 50.0,
+    "positiveFeedbackPoints": 1,
+    "totalFeedbackPoints": 2,
+    "user": {
+        "feedbackRating": "C(2)",
+        "isVerified": true,
+        "isffl": false,
+        "userID": 123,
+        "username": "tet-user"
+    }
+}
