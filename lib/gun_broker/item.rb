@@ -6,6 +6,7 @@ module GunBroker
 
     include GunBroker::Item::Constants
 
+    # TODO: Refactor this, #attributes, and #[] into a module.
     # @return [Hash] Attributes parsed from the JSON response.
     attr_reader :attrs
 

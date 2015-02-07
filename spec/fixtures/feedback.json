@@ -1,0 +1,76 @@
+{
+    "count": 2,
+    "links": [],
+    "pageIndex": 1,
+    "pageSize": 25,
+    "results": [
+        {
+            "buyerSellerStatus": "S",
+            "comment": "Never received item. Seller would not respond to emails or phone message. Money refunded 11 days after payment was sent only after filing a dispute with PayPal. Don't recommend dealing w/ this person.",
+            "date": "2014-08-22T20:57:19Z",
+            "followUp": null,
+            "followUpDate": null,
+            "fromUser": {
+                "feedbackRating": "A+(13)",
+                "isVerified": true,
+                "isffl": false,
+                "userID": 12345,
+                "username": "joe-user"
+            },
+            "isRegistered": true,
+            "itemID": 123,
+            "links": [
+                {
+                    "href": "https://api.gunbroker.com/v1/items/123",
+                    "rel": "item",
+                    "title": "123",
+                    "verb": "GET"
+                },
+                {
+                    "href": "https://api.gunbroker.com/v1/feedback/12345",
+                    "rel": "fromuserfeedback",
+                    "title": "joe-user",
+                    "verb": "GET"
+                }
+            ],
+            "ratingLetter": "F",
+            "ratingScore": 0.0,
+            "reply": null,
+            "replyDate": null
+        },
+        {
+            "buyerSellerStatus": "S",
+            "comment": "Excellent transaction.  Good communication.  A+",
+            "date": "2014-07-09T19:46:57Z",
+            "followUp": null,
+            "followUpDate": null,
+            "fromUser": {
+                "feedbackRating": "A+(94)",
+                "isVerified": true,
+                "isffl": false,
+                "userID": 9876,
+                "username": "other-user"
+            },
+            "isRegistered": true,
+            "itemID": 530,
+            "links": [
+                {
+                    "href": "https://api.gunbroker.com/v1/items/530",
+                    "rel": "item",
+                    "title": "414806299",
+                    "verb": "GET"
+                },
+                {
+                    "href": "https://api.gunbroker.com/v1/feedback/9876",
+                    "rel": "fromuserfeedback",
+                    "title": "other-user",
+                    "verb": "GET"
+                }
+            ],
+            "ratingLetter": "A+",
+            "ratingScore": 5.0,
+            "reply": null,
+            "replyDate": null
+        }
+    ]
+}
