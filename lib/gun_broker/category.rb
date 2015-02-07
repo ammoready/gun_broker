@@ -5,10 +5,10 @@ module GunBroker
     # The top-level category ID.
     ROOT_CATEGORY_ID = 0
 
-    # @param parent [Integer, String] (optional) Return all subcategories of the given parent Category ID; defaults to the root (top-level) categories.
+    # @param parent_id [Integer, String] (optional) Return all subcategories of the given parent Category ID; defaults to the root (top-level) categories.
     # @return [Array<Category>] An array of GunBroker::Category instances.
-    def self.all(parent = ROOT_CATEGORY_ID)
-      response = GunBroker::API.get('/Categories', { 'ParentCategoryID' => parent })
+    def self.all(parent_id = ROOT_CATEGORY_ID)
+      response = GunBroker::API.get('/Categories', { 'ParentCategoryID' => parent_id })
       response['results'].map { |attrs| new(attrs) }
     end
 
