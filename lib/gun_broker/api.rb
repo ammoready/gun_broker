@@ -1,5 +1,5 @@
 require 'json'
-require 'net/https'
+require 'net/http'
 
 module GunBroker
   # Generic REST adapter for the GunBroker API.
