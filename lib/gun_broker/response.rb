@@ -24,5 +24,10 @@ module GunBroker
       @data[key]
     end
 
+    # @return [Hash] The response body as a Hash.
+    def body
+      @data
+    end
+
   end
 end

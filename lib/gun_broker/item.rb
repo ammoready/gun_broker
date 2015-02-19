@@ -23,7 +23,8 @@ module GunBroker
     # @raise [GunBroker::Error::NotFound] If no Item with `item_id` exists.
     # @return (see .find)
     def self.find!(item_id)
-      new(GunBroker::API.get("/Items/#{item_id}"))
+      response = GunBroker::API.get("/Items/#{item_id}")
+      new(response.body)
     end
 
     # @param attrs [Hash] The JSON attributes from the API response.
