@@ -33,6 +33,16 @@ module GunBroker
       @token = response['accessToken']
     end
 
+    # @return [Boolean] `true` if the current credentials are valid.
+    def authenticated?
+      return false unless has_credentials?
+      return !!(authenticate!) if has_password?
+      return !!(contact_info) if has_token?  # #contact_info requires a valid token, so use that as a check.
+      false
+    rescue GunBroker::Error::NotAuthorized
+      false
+    end
+
     # Sends a DELETE request to deactivate the current access {#token}.
     # @note {API#delete! DELETE} /Users/AccessToken
     # @raise [GunBroker::Error::RequestError] If there's an issue with the request (usually a `5xx` response).
@@ -57,6 +67,25 @@ module GunBroker
     # @return [ItemsDelegate]
     def items
       ItemsDelegate.new(self)
+    end
+
+    private
+
+    # @return [Boolean] `true` if `@username` is present and either `@password` *or* `@token` is present.
+    def has_credentials?
+      has_username? && (has_password? || has_token?)
+    end
+
+    def has_password?
+      !@password.nil? && !@password.empty?
+    end
+
+    def has_token?
+      !@token.nil? && !@token.empty?
+    end
+
+    def has_username?
+      !@username.nil? && !@username.empty?
     end
 
   end

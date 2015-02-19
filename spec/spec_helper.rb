@@ -8,4 +8,5 @@ require 'gun_broker'
 RSpec.configure do |config|
   config.include GunBroker::Test::Fixtures
   config.include GunBroker::Test::Headers
+  config.include GunBroker::Test::Request
 end

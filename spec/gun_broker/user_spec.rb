@@ -35,12 +35,7 @@ describe GunBroker::User do
 
     context 'on success' do
       it 'should set the access token' do
-        stub_request(:post,  endpoint)
-          .with(
-            headers: headers,
-            body: { username: username, password: password },
-          )
-          .to_return(body: { 'accessToken' => token }.to_json)
+        stub_authentication(username, password)
 
         user = GunBroker::User.new(username, password: password)
         user.authenticate!
@@ -51,14 +46,52 @@ describe GunBroker::User do
 
     context 'on failure' do
       it 'should raise a GunBroker::Error::NotAuthorized exception' do
-        stub_request(:post, endpoint)
-          .with(
-            headers: headers,
-            body: { username: username, password: password }
-          ).to_return(body: response_fixture('not_authorized'), status: 401)
+        stub_authentication_failure(username, password)
 
         user = GunBroker::User.new(username, password: password)
         expect { user.authenticate! }.to raise_error(GunBroker::Error::NotAuthorized)
+      end
+    end
+  end
+
+  context 'authenticated?' do
+    context 'credentials' do
+      it 'returns false unless username is present' do
+        user = GunBroker::User.new('', token: 'foo')
+        expect(user.authenticated?).to eq(false)
+      end
+
+      it 'returns false unless password or token are present' do
+        expect(GunBroker::User.new(username, token: nil).authenticated?).to eq(false)
+        expect(GunBroker::User.new(username, password: nil).authenticated?).to eq(false)
+      end
+    end
+
+    context '@password' do
+      it 'returns true if valid' do
+        user = GunBroker::User.new(username, password: password)
+        expect(user).to receive(:authenticate!).and_return(true)
+        expect(user.authenticated?).to eq(true)
+      end
+
+      it 'returns false if invalid' do
+        user = GunBroker::User.new(username, password: password)
+        expect(user).to receive(:authenticate!).and_return(false)
+        expect(user.authenticated?).to eq(false)
+      end
+    end
+
+    context '@token' do
+      it 'returns true if valid' do
+        user = GunBroker::User.new(username, token: token)
+        expect(user).to receive(:contact_info).and_return(true)
+        expect(user.authenticated?).to eq(true)
+      end
+
+      it 'returns false if invalid' do
+        user = GunBroker::User.new(username, token: token)
+        expect(user).to receive(:contact_info).and_return(false)
+        expect(user.authenticated?).to eq(false)
       end
     end
   end
