@@ -52,6 +52,11 @@ module GunBroker
       @attrs['title']
     end
 
+    # @return [String] GunBroker.com URL for this Item.
+    def url
+      "http://www.gunbroker.com/Auction/ViewItem.aspx?Item=#{id}"
+    end
+
     # @param key [String] An Item attribute name (from the JSON response).
     # @return The value of the given `key` or `nil`.
     def [](key)

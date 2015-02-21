@@ -94,4 +94,14 @@ describe GunBroker::Item do
     end
   end
 
+  context '#url' do
+    it 'returns a fully qualified URL' do
+      id = '123'
+      item = GunBroker::Item.new({ 'itemID' => id })
+      url = "http://www.gunbroker.com/Auction/ViewItem.aspx?Item=#{id}"
+
+      expect(item.url).to eq(url)
+    end
+  end
+
 end
