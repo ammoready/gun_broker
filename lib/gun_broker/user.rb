@@ -23,6 +23,14 @@ module GunBroker
       @token    = auth_options[:token]    || auth_options['token']
     end
 
+    # Returns the GunBroker.com user ID. Uses {User#contact_info} to get the user details (therefore, the User must be authenticated).
+    # @raise [GunBroker::Error::NotAuthorized] If the User has not yet been authenticated.
+    # @raise [GunBroker::Error::RequestError] If there's an issue with the request (usually a `5xx` response).
+    # @return [String] The User's GunBroker.com user ID.
+    def id
+      contact_info['userID']
+    end
+
     # Authenticates with the GunBroker API server and saves the returned access {#token}.
     # @note {API#post! POST} /Users/AccessToken
     # @raise [GunBroker::Error::NotAuthorized] If the username/password is invalid.

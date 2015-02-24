@@ -23,6 +23,41 @@ describe GunBroker::User do
     end
   end
 
+  context '#id' do
+    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/Users/ContactInfo'].join }
+
+    context 'on success' do
+      it 'should return the user ID' do
+        user = GunBroker::User.new(username, token: token)
+
+        stub_request(:get, endpoint)
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 'UserName' => user.username }
+          )
+          .to_return(body: response_fixture('contact_info'))
+
+        contact_info = JSON.parse(response_fixture('contact_info'))
+        expect(user.id).to eq(contact_info['userID'])
+      end
+    end
+
+    context 'not authenticated' do
+      it 'should raise a GunBroker::Error::NotAuthorized exception' do
+        user = GunBroker::User.new(username, token: token)
+
+        stub_request(:get, endpoint)
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 'UserName' => user.username }
+          )
+          .to_raise(GunBroker::Error::NotAuthorized)
+
+        expect { user.id }.to raise_error(GunBroker::Error::NotAuthorized)
+      end
+    end
+  end
+
   context '#token_header' do
     it 'raises an error if @token nil' do
       user = GunBroker::User.new(username, token: nil)
