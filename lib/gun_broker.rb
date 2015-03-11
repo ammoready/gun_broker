@@ -31,7 +31,7 @@ module GunBroker
   end
 
   # If `true`, this library will use the 'sandbox' GunBroker API.
-  # @return [Boolean]
+  # @return [Boolean] Defaults to `false`.
   def self.sandbox
     defined?(@@sandbox) ? @@sandbox : false
   end

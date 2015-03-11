@@ -24,13 +24,25 @@ Or install it yourself as:
 
 The full documentation is located here: http://www.rubydoc.info/gems/gun_broker
 
-### Developer Token
+### Developer Key
 
 You **must** set a developer key obtained from GunBroker.com in order to use this library.
 
 ```ruby
 GunBroker.dev_key = 'your-sekret-dev-key'
 ```
+
+### Sandbox Mode
+
+If you want to use the GunBroker 'sandbox' API, set the `GunBroker.sandbox` flag to `true`.
+
+```ruby
+GunBroker.sandbox = true
+# Any API calls will now use the sandbox API.
+```
+
+**NOTE**: GunBroker.com currently issues different developer keys for production and sandbox environments,
+which means your production key **will not** work in the sandbox and vice versa.
 
 ### GunBroker::User
 
