@@ -8,11 +8,16 @@ module GunBroker
     # Root URL of the GunBroker API.
     GUNBROKER_API = 'https://api.gunbroker.com/v1'
 
+    # Root URL of the GunBroker sandbox API.
+    GUNBROKER_SANDBOX_API = 'https://api.sandbox.gunbroker.com/v1'
+
     # @param path [String] The requested API endpoint.
     # @param params [Hash] (optional) URL params for GET requests; form params for POST request.
     # @param headers [Hash] (optional) Additional headers sent with the request.
     def initialize(path, params = {}, headers = {})
       raise GunBroker::Error.new("Path must start with '/': #{path}") unless path.start_with?('/')
+
+      @base_api_url = GunBroker.sandbox ? GUNBROKER_SANDBOX_API : GUNBROKER_API
 
       @path = path
       @params = params
@@ -78,7 +83,7 @@ module GunBroker
     end
 
     def uri
-      @uri ||= URI([GUNBROKER_API, @path].join)
+      @uri ||= URI([@base_api_url, @path].join)
     end
 
   end

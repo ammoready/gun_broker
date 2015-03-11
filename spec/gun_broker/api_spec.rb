@@ -106,4 +106,10 @@ describe GunBroker::API do
     end
   end
 
+  it 'uses GUNBROKER_SANDBOX_API if GunBroker.sandbox_mode is true' do
+    expect(GunBroker).to receive(:sandbox).and_return(true)
+    api = GunBroker::API.new(path)
+    expect(api.instance_variable_get(:@base_api_url)).to eq(GunBroker::API::GUNBROKER_SANDBOX_API)
+  end
+
 end

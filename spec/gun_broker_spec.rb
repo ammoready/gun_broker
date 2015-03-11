@@ -6,7 +6,7 @@ describe GunBroker do
     expect(GunBroker::VERSION).to be_a(String)
   end
 
-  context 'dev_key' do
+  context '.dev_key' do
     let(:key) { 'foo' }
 
     it 'sets @@dev_key' do
@@ -25,8 +25,20 @@ describe GunBroker do
     end
   end
 
+  context '.sandbox' do
+    it 'defaults to false' do
+      expect(GunBroker.sandbox).to eq(false)
+    end
+
+    it 'sets @@sandbox to true' do
+      GunBroker.sandbox = true
+      expect(GunBroker.sandbox).to eq(true)
+    end
+  end
+
   context '.time' do
     before(:all) do
+      GunBroker.sandbox = false
       GunBroker.dev_key = 'test-dev-key'
     end
 

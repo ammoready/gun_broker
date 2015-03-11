@@ -24,6 +24,18 @@ module GunBroker
     @@dev_key
   end
 
+  # Determines if this library will use the production API or the 'sandbox' API.
+  # @param sandbox [Boolean]
+  def self.sandbox=(sandbox)
+    @@sandbox = sandbox
+  end
+
+  # If `true`, this library will use the 'sandbox' GunBroker API.
+  # @return [Boolean]
+  def self.sandbox
+    defined?(@@sandbox) ? @@sandbox : false
+  end
+
   # Returns a hash containing the time on GunBroker's servers in UTC
   # and the current version of the GunBroker API.
   #
