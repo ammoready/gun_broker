@@ -42,7 +42,7 @@ describe GunBroker do
       GunBroker.dev_key = 'test-dev-key'
     end
 
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/GunBrokerTime'].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, '/GunBrokerTime'].join }
     let(:response) { JSON.parse(response_fixture('time')) }
 
     it 'should return the GunBroker time' do

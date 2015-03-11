@@ -41,7 +41,7 @@ describe GunBroker::Item do
   end
 
   context '.find' do
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, "/Items/#{attrs['itemID']}"].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, "/Items/#{attrs['itemID']}"].join }
 
     context 'on success' do
       it 'returns an Item' do
@@ -68,7 +68,7 @@ describe GunBroker::Item do
   end
 
   context '.find!' do
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, "/Items/#{attrs['itemID']}"].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, "/Items/#{attrs['itemID']}"].join }
 
     context 'on success' do
       it 'returns an Item' do

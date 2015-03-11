@@ -24,7 +24,7 @@ describe GunBroker::User do
   end
 
   context '#id' do
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/Users/ContactInfo'].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, '/Users/ContactInfo'].join }
 
     context 'on success' do
       it 'should return the user ID' do
@@ -66,7 +66,7 @@ describe GunBroker::User do
   end
 
   context '#authenticate!' do
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/Users/AccessToken'].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, '/Users/AccessToken'].join }
 
     context 'on success' do
       it 'should set the access token' do
@@ -132,7 +132,7 @@ describe GunBroker::User do
   end
 
   context '#deauthenticate!' do
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/Users/AccessToken'].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, '/Users/AccessToken'].join }
 
     context 'on success' do
       it 'should deactivate the current access token' do
@@ -172,7 +172,7 @@ describe GunBroker::User do
   end
 
   context '#contact_info' do
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/Users/ContactInfo'].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, '/Users/ContactInfo'].join }
 
     context 'on success' do
       it 'returns a contact info hash' do

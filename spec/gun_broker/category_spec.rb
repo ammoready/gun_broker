@@ -28,7 +28,7 @@ describe GunBroker::Category do
   end
 
   context '.all' do
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/Categories'].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, '/Categories'].join }
 
     context 'on success' do
       it 'returns all categories' do
@@ -61,7 +61,7 @@ describe GunBroker::Category do
 
   context '.find' do
     let(:attrs) { JSON.parse(response_fixture('category')) }
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, "/Categories/#{attrs['categoryID']}"].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, "/Categories/#{attrs['categoryID']}"].join }
 
     context 'on success' do
       it 'returns the Category' do
@@ -90,7 +90,7 @@ describe GunBroker::Category do
 
   context '.find!' do
     let(:attrs) { JSON.parse(response_fixture('category')) }
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, "/Categories/#{attrs['categoryID']}"].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, "/Categories/#{attrs['categoryID']}"].join }
 
     context 'on success' do
       it 'returns the Category' do

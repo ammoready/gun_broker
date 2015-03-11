@@ -8,7 +8,7 @@ describe GunBroker::User::ItemsDelegate do
   let(:delegate) { GunBroker::User::ItemsDelegate.new(user) }
 
   context '#all' do
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/Items'].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, '/Items'].join }
 
     context 'on success' do
       it 'returns the User items' do
@@ -39,7 +39,7 @@ describe GunBroker::User::ItemsDelegate do
   end
 
   context '#bid_on' do
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/ItemsBidOn'].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, '/ItemsBidOn'].join }
 
     context 'on success' do
       it 'returns won Items' do
@@ -67,8 +67,8 @@ describe GunBroker::User::ItemsDelegate do
 
   context '#find' do
     let(:attrs) { JSON.parse(response_fixture('item')) }
-    let(:all_endpoint) { [GunBroker::API::GUNBROKER_API, '/Items'].join }
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, "/Items/#{attrs['itemID']}"].join }
+    let(:all_endpoint) { [GunBroker::API::ROOT_URL, '/Items'].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, "/Items/#{attrs['itemID']}"].join }
 
     it 'returns a single Item' do
       # First, stub the '/Items' request, since we have to use that to scope the Item find by user.
@@ -102,7 +102,7 @@ describe GunBroker::User::ItemsDelegate do
   end
 
   context '#find!' do
-    let(:all_endpoint) { [GunBroker::API::GUNBROKER_API, '/Items'].join }
+    let(:all_endpoint) { [GunBroker::API::ROOT_URL, '/Items'].join }
 
     it 'calls #find' do
       item_id = 123
@@ -126,7 +126,7 @@ describe GunBroker::User::ItemsDelegate do
   end
 
   context '#not_won' do
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/ItemsNotWon'].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, '/ItemsNotWon'].join }
 
     context 'on success' do
       it 'returns won Items' do
@@ -153,7 +153,7 @@ describe GunBroker::User::ItemsDelegate do
   end
 
   context '#sold' do
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/ItemsSold'].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, '/ItemsSold'].join }
 
     context 'on success' do
       it 'returns sold Items' do
@@ -180,7 +180,7 @@ describe GunBroker::User::ItemsDelegate do
   end
 
   context '#unsold' do
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/ItemsUnsold'].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, '/ItemsUnsold'].join }
 
     context 'on success' do
       it 'returns unsold Items' do
@@ -207,7 +207,7 @@ describe GunBroker::User::ItemsDelegate do
   end
 
   context '#won' do
-    let(:endpoint) { [GunBroker::API::GUNBROKER_API, '/ItemsWon'].join }
+    let(:endpoint) { [GunBroker::API::ROOT_URL, '/ItemsWon'].join }
 
     context 'on success' do
       it 'returns won Items' do

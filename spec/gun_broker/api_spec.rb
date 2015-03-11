@@ -5,7 +5,7 @@ describe GunBroker::API do
   let(:token) { 'test-user-access-token' }
 
   let(:path)     { '/some/resource' }
-  let(:endpoint) { [GunBroker::API::GUNBROKER_API, path].join }
+  let(:endpoint) { [GunBroker::API::ROOT_URL, path].join }
 
   let(:test_response) { JSON.parse(response_fixture('test')) }
 
@@ -13,8 +13,8 @@ describe GunBroker::API do
     GunBroker.dev_key = 'test-dev-key'
   end
 
-  it 'has a GUNBROKER_API constant' do
-    expect(GunBroker::API::GUNBROKER_API).not_to be_nil
+  it 'has a ROOT_URL constant' do
+    expect(GunBroker::API::ROOT_URL).not_to be_nil
   end
 
   it "raises GunBroker::Error if path does not start with '/'" do
@@ -106,10 +106,10 @@ describe GunBroker::API do
     end
   end
 
-  it 'uses GUNBROKER_SANDBOX_API if GunBroker.sandbox_mode is true' do
+  it 'uses ROOT_URL_SANDBOX if GunBroker.sandbox_mode is true' do
     expect(GunBroker).to receive(:sandbox).and_return(true)
     api = GunBroker::API.new(path)
-    expect(api.instance_variable_get(:@base_api_url)).to eq(GunBroker::API::GUNBROKER_SANDBOX_API)
+    expect(api.instance_variable_get(:@base_api_url)).to eq(GunBroker::API::ROOT_URL_SANDBOX)
   end
 
 end

@@ -4,7 +4,7 @@ module GunBroker
   module Test
     module Request
 
-      AUTH_ENDPOINT = [GunBroker::API::GUNBROKER_API, '/Users/AccessToken'].join
+      AUTH_ENDPOINT = [GunBroker::API::ROOT_URL, '/Users/AccessToken'].join
 
       def stub_authentication(username, password)
         stub_request(:post, AUTH_ENDPOINT)
