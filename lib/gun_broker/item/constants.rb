@@ -54,29 +54,29 @@ module GunBroker
       # The payment methods accepted by the seller for this Item.
       # The keys of this hash should be sent as `true` or `false` in the `paymentMethods` param.
       PAYMENT_METHODS = {
-        'SeeItemDesc' => 'See Item Description',
-        'Amex' => 'American Express',
-        'COD' => 'Cash on Delivery',
-        'CertifiedCheck' => 'Certified Check',
-        'Check' => 'Check',
-        'Discover' => 'Discover Card',
-        'Escrow' => 'Escrow',
-        'MoneyOrder' => 'Money Order',
-        'PayPal' => 'PayPal',
+        'seeItemDesc' => 'See Item Description',
+        'amex' => 'American Express',
+        'cod' => 'Cash on Delivery',
+        'certifiedCheck' => 'Certified Check',
+        'check' => 'Check',
+        'discover' => 'Discover Card',
+        'escrow' => 'Escrow',
+        'moneyOrder' => 'Money Order',
+        'payPal' => 'PayPal',
         'USPSMoneyOrder' => 'USPS Money Order',
-        'VisaMastercard' => 'Visa / Mastercard',
+        'visaMastercard' => 'Visa / Mastercard',
       }
 
       # The type of shipping offered by the seller of this Item.
       # The keys of this hash should be sent as `true` or `false` in the `shippingClassesSupported` param.
       SHIPPING_CLASSES = {
-        'Overnight' => 'Overnight',
-        'TwoDay' => 'Two Day',
-        'ThreeDay' => 'Three Day',
-        'Ground' => 'Ground',
-        'FirstClass' => 'First Class',
-        'Priority' => 'Priority',
-        'Other' => 'Other',
+        'overnight' => 'Overnight',
+        'twoDay' => 'Two Day',
+        'threeDay' => 'Three Day',
+        'ground' => 'Ground',
+        'firstClass' => 'First Class',
+        'priority' => 'Priority',
+        'other' => 'Other',
       }
 
       # Who pays for shipping.
