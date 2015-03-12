@@ -42,6 +42,12 @@ module GunBroker
       new(*args).post!
     end
 
+    # Wrapper for {GunBroker::API#multipart_post! `new(*args).multipart_post!`}
+    # @param *args Splat arguments passed to {#initialize}.
+    def self.multipart_post(*args)
+      new(*args).multipart_post!
+    end
+
     # Sends a DELETE request to the given `path`.
     def delete!
       request = Net::HTTP::Delete.new(uri)
@@ -63,6 +69,25 @@ module GunBroker
       request = Net::HTTP::Post.new(uri)
       request.body = @params.to_json
 
+      response = get_response(request)
+      GunBroker::Response.new(response)
+    end
+
+    # Sends a multipart form POST to the given `path`.
+    def multipart_post!
+      boundary = SecureRandom.hex(15)
+      request = Net::HTTP::Post.new(uri)
+
+      @headers['Content-Type'] = "multipart/form-data; boundary=#{boundary}"
+
+      post_body = []
+      post_body << "--#{boundary}\r\n"
+      post_body << "Content-Disposition: form-data; name=\"data\"\r\n"
+      post_body << "\r\n"
+      post_body << "#{@params.to_json}\r\n"
+      post_body << "--#{boundary}--\r\n"
+
+      request.body = post_body.join
       response = get_response(request)
       GunBroker::Response.new(response)
     end
