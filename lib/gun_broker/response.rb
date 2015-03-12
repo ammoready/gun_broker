@@ -10,11 +10,11 @@ module GunBroker
       when Net::HTTPOK, Net::HTTPSuccess
         @data = JSON.parse(@response.body)
       when Net::HTTPUnauthorized
-        raise GunBroker::Error::NotAuthorized.new(@response)
+        raise GunBroker::Error::NotAuthorized.new(@response.body)
       when Net::HTTPNotFound
-        raise GunBroker::Error::NotFound.new(@response)
+        raise GunBroker::Error::NotFound.new(@response.body)
       else
-        raise GunBroker::Error::RequestError.new(@response)
+        raise GunBroker::Error::RequestError.new(@response.body)
       end
     end
 
