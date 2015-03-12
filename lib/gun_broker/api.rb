@@ -75,24 +75,29 @@ module GunBroker
 
     # Sends a multipart form POST to the given `path`.
     def multipart_post!
-      boundary = SecureRandom.hex(15)
       request = Net::HTTP::Post.new(uri)
+      request.body = build_request_body
 
-      @headers['Content-Type'] = "multipart/form-data; boundary=#{boundary}"
-
-      post_body = []
-      post_body << "--#{boundary}\r\n"
-      post_body << "Content-Disposition: form-data; name=\"data\"\r\n"
-      post_body << "\r\n"
-      post_body << "#{@params.to_json}\r\n"
-      post_body << "--#{boundary}--\r\n"
-
-      request.body = post_body.join
       response = get_response(request)
       GunBroker::Response.new(response)
     end
 
     private
+
+    def build_request_body
+      boundary = SecureRandom.hex(15)
+
+      @headers['Content-Type'] = "multipart/form-data; boundary=#{boundary}"
+
+      body = []
+      body << "--#{boundary}\r\n"
+      body << "Content-Disposition: form-data; name=\"data\"\r\n"
+      body << "\r\n"
+      body << "#{@params.to_json}\r\n"
+      body << "--#{boundary}--\r\n"
+
+      body.join
+    end
 
     def get_response(request)
       request['Content-Type'] = 'application/json'
