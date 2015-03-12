@@ -1,4 +1,5 @@
 require 'gun_broker/token_header'
+require 'gun_broker/user/item_editor'
 
 module GunBroker
   class User
@@ -29,6 +30,18 @@ module GunBroker
       def bid_on
         response = GunBroker::API.get('/ItemsBidOn', {}, token_header(@user.token))
         items_from_results(response['results'])
+      end
+
+      # (see ItemEditor)
+      # See the {ItemEditor#create} docs.
+      def create(params = {})
+        ItemEditor.new(@user, params).create
+      end
+
+      # (see ItemEditor)
+      # See the {ItemEditor#create!} docs.
+      def create!(params = {})
+        ItemEditor.new(@user, params).create!
       end
 
       # Finds a specific User's Item by ID. Calls {Item.find} to get full Item details.
