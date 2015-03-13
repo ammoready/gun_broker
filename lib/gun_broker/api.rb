@@ -1,5 +1,6 @@
 require 'json'
 require 'net/http'
+require 'securerandom'
 
 module GunBroker
   # Generic REST adapter for the GunBroker API.
@@ -100,7 +101,7 @@ module GunBroker
     private
 
     def build_request_body
-      boundary = SecureRandom.hex(15)
+      boundary = ::SecureRandom.hex(15)
 
       @headers['Content-Type'] = "multipart/form-data; boundary=#{boundary}"
 
