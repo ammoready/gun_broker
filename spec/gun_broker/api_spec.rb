@@ -106,6 +106,57 @@ describe GunBroker::API do
     end
   end
 
+  context '.multipart_post' do
+    context 'on success' do
+      it 'returns JSON parsed response' do
+        stub_request(:post, endpoint).to_return(body: response_fixture('test'))
+
+        response = GunBroker::API.multipart_post(path, { username: 'test-user' })
+
+        expect(response).to be_a(GunBroker::Response)
+        expect(response['test']).to eq(test_response['test'])
+      end
+    end
+
+    context 'on failure' do
+      it 'raises an exception' do
+        stub_request(:post, endpoint)
+          .to_return(body: response_fixture('empty'), status: 500)
+
+        api = GunBroker::API.new(path)
+        expect { api.multipart_post! }.to raise_error(GunBroker::Error::RequestError)
+      end
+    end
+  end
+
+  context '.put' do
+    context 'on success' do
+      it 'returns JSON parsed response' do
+        stub_request(:put, endpoint)
+          .with(
+            headers: headers,
+            body: { username: 'test-user' }
+          )
+          .to_return(body: response_fixture('test'))
+
+        response = GunBroker::API.put(path, { username: 'test-user' }, headers)
+
+        expect(response).to be_a(GunBroker::Response)
+        expect(response['test']).to eq(test_response['test'])
+      end
+    end
+
+    context 'on failure' do
+      it 'raises an exception' do
+        stub_request(:put, endpoint)
+          .to_return(body: response_fixture('empty'), status: 500)
+
+        api = GunBroker::API.new(path)
+        expect { api.put! }.to raise_error(GunBroker::Error::RequestError)
+      end
+    end
+  end
+
   it 'uses ROOT_URL_SANDBOX if GunBroker.sandbox_mode is true' do
     expect(GunBroker).to receive(:sandbox).and_return(true)
     api = GunBroker::API.new(path)
