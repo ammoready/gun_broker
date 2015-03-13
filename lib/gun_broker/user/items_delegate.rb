@@ -3,7 +3,7 @@ require 'gun_broker/user/item_editor'
 
 module GunBroker
   class User
-    # Used to scope {Item} lookup by {User}.
+    # Used to scope {Item} actions by {User}.
     class ItemsDelegate
 
       include GunBroker::TokenHeader
@@ -34,14 +34,34 @@ module GunBroker
 
       # (see ItemEditor)
       # See the {ItemEditor#create} docs.
-      def create(params = {})
-        ItemEditor.new(@user, params).create
+      def create(attributes = {})
+        ItemEditor.new(@user, attributes).create
       end
 
       # (see ItemEditor)
       # See the {ItemEditor#create!} docs.
-      def create!(params = {})
-        ItemEditor.new(@user, params).create!
+      def create!(attributes = {})
+        ItemEditor.new(@user, attributes).create!
+      end
+
+      # Updates an {Item} with the given attributes.
+      # @param (see #update!)
+      # @return [GunBroker::Item] The updated Item instance or `false` if update fails.
+      def update(*args)
+        update!(*args)
+      rescue GunBroker::Error
+        false
+      end
+
+      # Same as {#update} but raises exceptions on error.
+      # @param item_id [Integer, String] ID of the Item to update.
+      # @param attributes [Hash] The new Item attributes.
+      # @raise [GunBroker::Error::NotAuthorized] If the {User#token `@user` token} isn't valid.
+      # @raise [GunBroker::Error::RequestError] If the Item attributes are not valid or required attributes are missing.
+      # @return [GunBroker::Item] The updated Item instance.
+      def update!(item_id, attributes = {})
+        GunBroker::API.put("/Items/#{item_id}", attributes, token_header(@user.token))
+        GunBroker::Item.find(item_id)
       end
 
       # Finds a specific User's Item by ID. Calls {Item.find} to get full Item details.

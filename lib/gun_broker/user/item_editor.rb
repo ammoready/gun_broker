@@ -2,6 +2,7 @@ require 'gun_broker/token_header'
 
 module GunBroker
   class User
+    # TODO: On second thought, this class is pretty dumb.  Move the #create methods to ItemsDelegate.
     class ItemEditor
 
       include GunBroker::TokenHeader

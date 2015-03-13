@@ -48,6 +48,12 @@ module GunBroker
       new(*args).multipart_post!
     end
 
+    # Wrapper for {GunBroker::API#put! `new(*args).put!`}
+    # @param *args Splat arguments passed to {#initialize}.
+    def self.put(*args)
+      new(*args).put!
+    end
+
     # Sends a DELETE request to the given `path`.
     def delete!
       request = Net::HTTP::Delete.new(uri)
@@ -77,6 +83,15 @@ module GunBroker
     def multipart_post!
       request = Net::HTTP::Post.new(uri)
       request.body = build_request_body
+
+      response = get_response(request)
+      GunBroker::Response.new(response)
+    end
+
+    # Sends a PUT request to the given `path`.
+    def put!
+      request = Net::HTTP::Put.new(uri)
+      request.body = @params.to_json
 
       response = get_response(request)
       GunBroker::Response.new(response)
