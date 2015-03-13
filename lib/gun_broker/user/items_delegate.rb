@@ -1,5 +1,4 @@
 require 'gun_broker/token_header'
-require 'gun_broker/user/item_editor'
 
 module GunBroker
   class User
@@ -32,16 +31,22 @@ module GunBroker
         items_from_results(response['results'])
       end
 
-      # (see ItemEditor)
-      # See the {ItemEditor#create} docs.
+      # Sends a multipart/form-data POST request to create an Item with the given `attributes`.
+      # @return [GunBroker::Item] A {Item} instance or `false` if the item could not be created.
       def create(attributes = {})
-        ItemEditor.new(@user, attributes).create
+        create!
+      rescue GunBroker::Error
+        false
       end
 
-      # (see ItemEditor)
-      # See the {ItemEditor#create!} docs.
+      # Same as {#create} but raises GunBroker::Error::RequestError on failure.
+      # @raise [GunBroker::Error::NotAuthorized] If the {User#token `@user` token} isn't valid.
+      # @raise [GunBroker::Error::RequestError] If the Item attributes are not valid or required attributes are missing.
+      # @return [GunBroker::Item] A {Item} instance.
       def create!(attributes = {})
-        ItemEditor.new(@user, attributes).create!
+        response = GunBroker::API.multipart_post('/Items', attributes, token_header(@user.token))
+        item_id = response.body['links'].first['title']
+        GunBroker::Item.find(item_id)
       end
 
       # Updates an {Item} with the given attributes.
