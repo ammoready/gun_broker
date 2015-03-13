@@ -49,26 +49,6 @@ module GunBroker
         GunBroker::Item.find(item_id)
       end
 
-      # Updates an {Item} with the given attributes.
-      # @param (see #update!)
-      # @return [GunBroker::Item] The updated Item instance or `false` if update fails.
-      def update(*args)
-        update!(*args)
-      rescue GunBroker::Error
-        false
-      end
-
-      # Same as {#update} but raises exceptions on error.
-      # @param item_id [Integer, String] ID of the Item to update.
-      # @param attributes [Hash] The new Item attributes.
-      # @raise [GunBroker::Error::NotAuthorized] If the {User#token `@user` token} isn't valid.
-      # @raise [GunBroker::Error::RequestError] If the Item attributes are not valid or required attributes are missing.
-      # @return [GunBroker::Item] The updated Item instance.
-      def update!(item_id, attributes = {})
-        GunBroker::API.put("/Items/#{item_id}", attributes, token_header(@user.token))
-        GunBroker::Item.find(item_id)
-      end
-
       # Finds a specific User's Item by ID. Calls {Item.find} to get full Item details.
       # @raise (see #all)
       # @return [Item] Returns the Item or `nil` if no Item found.
@@ -116,6 +96,26 @@ module GunBroker
       def unsold
         response = GunBroker::API.get('/ItemsUnsold', {}, token_header(@user.token))
         items_from_results(response['results'])
+      end
+
+      # Updates an {Item} with the given attributes.
+      # @param (see #update!)
+      # @return [GunBroker::Item] The updated Item instance or `false` if update fails.
+      def update(*args)
+        update!(*args)
+      rescue GunBroker::Error
+        false
+      end
+
+      # Same as {#update} but raises exceptions on error.
+      # @param item_id [Integer, String] ID of the Item to update.
+      # @param attributes [Hash] The new Item attributes.
+      # @raise [GunBroker::Error::NotAuthorized] If the {User#token `@user` token} isn't valid.
+      # @raise [GunBroker::Error::RequestError] If the Item attributes are not valid or required attributes are missing.
+      # @return [GunBroker::Item] The updated Item instance.
+      def update!(item_id, attributes = {})
+        GunBroker::API.put("/Items/#{item_id}", attributes, token_header(@user.token))
+        GunBroker::Item.find(item_id)
       end
 
       # Items the User has won.
