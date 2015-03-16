@@ -35,7 +35,10 @@ describe GunBroker::Category do
         stub_request(:get, endpoint)
           .with(
             headers: headers,
-            query: { 'ParentCategoryID' => GunBroker::Category::ROOT_CATEGORY_ID }
+            query: {
+              'ParentCategoryID' => GunBroker::Category::ROOT_CATEGORY_ID,
+              'PageSize' => GunBroker::API::PAGE_SIZE
+            }
           )
           .to_return(body: response_fixture('categories'))
 
@@ -50,7 +53,10 @@ describe GunBroker::Category do
         stub_request(:get, endpoint)
           .with(
             headers: headers,
-            query: { 'ParentCategoryID' => GunBroker::Category::ROOT_CATEGORY_ID }
+            query: {
+              'ParentCategoryID' => GunBroker::Category::ROOT_CATEGORY_ID,
+              'PageSize' => GunBroker::API::PAGE_SIZE
+            }
           )
           .to_return(body: response_fixture('not_authorized'), status: 401)
 

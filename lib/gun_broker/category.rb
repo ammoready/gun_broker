@@ -8,7 +8,7 @@ module GunBroker
     # @param parent_id [Integer, String] (optional) Return all subcategories of the given parent Category ID; defaults to the root (top-level) categories.
     # @return [Array<Category>] An array of GunBroker::Category instances.
     def self.all(parent_id = ROOT_CATEGORY_ID)
-      response = GunBroker::API.get('/Categories', { 'ParentCategoryID' => parent_id })
+      response = GunBroker::API.get('/Categories', { 'ParentCategoryID' => parent_id, 'PageSize' => GunBroker::API::PAGE_SIZE })
       response['results'].map { |attrs| new(attrs) }
     end
 

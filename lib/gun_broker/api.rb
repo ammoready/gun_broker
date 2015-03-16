@@ -12,6 +12,9 @@ module GunBroker
     # Root URL of the GunBroker sandbox API.
     ROOT_URL_SANDBOX = 'https://api.sandbox.gunbroker.com/v1'
 
+    # Used to return the maximum number of results from paginated responses.
+    PAGE_SIZE = 300
+
     # @param path [String] The requested API endpoint.
     # @param params [Hash] (optional) URL params for GET requests; form params for POST request.
     # @param headers [Hash] (optional) Additional headers sent with the request.

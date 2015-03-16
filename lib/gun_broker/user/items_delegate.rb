@@ -18,7 +18,10 @@ module GunBroker
       # @raise [GunBroker::Error::RequestError] If there's an issue with the request (usually a `5xx` response).
       # @return [Array<Item>]
       def all
-        response = GunBroker::API.get('/Items', { 'SellerName' => @user.username }, token_header(@user.token))
+        response = GunBroker::API.get('/Items', {
+          'SellerName' => @user.username,
+          'PageSize' => GunBroker::API::PAGE_SIZE
+        }, token_header(@user.token))
         items_from_results(response['results'])
       end
 
@@ -27,7 +30,9 @@ module GunBroker
       # @raise (see #all)
       # @return [Array<Item>]
       def bid_on
-        response = GunBroker::API.get('/ItemsBidOn', {}, token_header(@user.token))
+        response = GunBroker::API.get('/ItemsBidOn', {
+          'PageSize' => GunBroker::API::PAGE_SIZE
+        }, token_header(@user.token))
         items_from_results(response['results'])
       end
 
@@ -76,7 +81,9 @@ module GunBroker
       # @raise (see #all)
       # @return [Array<Item>]
       def not_won
-        response = GunBroker::API.get('/ItemsNotWon', {}, token_header(@user.token))
+        response = GunBroker::API.get('/ItemsNotWon', {
+          'PageSize' => GunBroker::API::PAGE_SIZE
+        }, token_header(@user.token))
         items_from_results(response['results'])
       end
 
@@ -85,7 +92,9 @@ module GunBroker
       # @raise (see #all)
       # @return [Array<Item>]
       def sold
-        response = GunBroker::API.get('/ItemsSold', {}, token_header(@user.token))
+        response = GunBroker::API.get('/ItemsSold', {
+          'PageSize' => GunBroker::API::PAGE_SIZE
+        }, token_header(@user.token))
         items_from_results(response['results'])
       end
 
@@ -94,7 +103,9 @@ module GunBroker
       # @raise (see #all)
       # @return [Array<Item>]
       def unsold
-        response = GunBroker::API.get('/ItemsUnsold', {}, token_header(@user.token))
+        response = GunBroker::API.get('/ItemsUnsold', {
+          'PageSize' => GunBroker::API::PAGE_SIZE
+        }, token_header(@user.token))
         items_from_results(response['results'])
       end
 
@@ -123,7 +134,9 @@ module GunBroker
       # @raise (see #all)
       # @return [Array<Item>]
       def won
-        response = GunBroker::API.get('/ItemsWon', {}, token_header(@user.token))
+        response = GunBroker::API.get('/ItemsWon', {
+          'PageSize' => GunBroker::API::PAGE_SIZE
+        }, token_header(@user.token))
         items_from_results(response['results'])
       end
 

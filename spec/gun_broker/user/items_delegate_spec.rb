@@ -15,7 +15,10 @@ describe GunBroker::User::ItemsDelegate do
         stub_request(:get, endpoint)
           .with(
             headers: headers('X-AccessToken' => token),
-            query: { 'SellerName' => user.username }
+            query: {
+              'SellerName' => user.username,
+              'PageSize' => GunBroker::API::PAGE_SIZE
+            }
           )
           .to_return(body: response_fixture('items'))
 
@@ -29,7 +32,10 @@ describe GunBroker::User::ItemsDelegate do
         stub_request(:get, endpoint)
           .with(
             headers: headers('X-AccessToken' => token),
-            query: { 'SellerName' => user.username }
+            query: {
+              'SellerName' => user.username,
+              'PageSize' => GunBroker::API::PAGE_SIZE
+            }
           )
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
@@ -44,7 +50,10 @@ describe GunBroker::User::ItemsDelegate do
     context 'on success' do
       it 'returns won Items' do
         stub_request(:get, endpoint)
-          .with(headers: headers('X-AccessToken' => token))
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+          )
           .to_return(body: response_fixture('items'))
 
         user = GunBroker::User.new(username, token: token)
@@ -56,7 +65,10 @@ describe GunBroker::User::ItemsDelegate do
     context 'on failure' do
       it 'raises an exception' do
         stub_request(:get, endpoint)
-          .with(headers: headers('X-AccessToken' => token))
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+          )
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
         user = GunBroker::User.new(username, token: token)
@@ -75,7 +87,10 @@ describe GunBroker::User::ItemsDelegate do
       stub_request(:get, all_endpoint)
         .with(
           headers: headers('X-AccessToken' => token),
-          query: { 'SellerName' => user.username }
+          query: {
+            'SellerName' => user.username,
+            'PageSize' => GunBroker::API::PAGE_SIZE
+          }
         )
         .to_return(body: response_fixture('items'))
 
@@ -93,7 +108,10 @@ describe GunBroker::User::ItemsDelegate do
       stub_request(:get, all_endpoint)
         .with(
           headers: headers('X-AccessToken' => token),
-          query: { 'SellerName' => user.username }
+          query: {
+            'SellerName' => user.username,
+            'PageSize' => GunBroker::API::PAGE_SIZE
+          }
         )
         .to_return(body: response_fixture('items'))
 
@@ -114,7 +132,10 @@ describe GunBroker::User::ItemsDelegate do
       stub_request(:get, all_endpoint)
         .with(
           headers: headers('X-AccessToken' => token),
-          query: { 'SellerName' => user.username }
+          query: {
+            'SellerName' => user.username,
+            'PageSize' => GunBroker::API::PAGE_SIZE
+          }
         )
         .to_return(body: response_fixture('items'))
 
@@ -131,7 +152,10 @@ describe GunBroker::User::ItemsDelegate do
     context 'on success' do
       it 'returns won Items' do
         stub_request(:get, endpoint)
-          .with(headers: headers('X-AccessToken' => token))
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+          )
           .to_return(body: response_fixture('items'))
 
         user = GunBroker::User.new(username, token: token)
@@ -143,7 +167,10 @@ describe GunBroker::User::ItemsDelegate do
     context 'on failure' do
       it 'raises an exception' do
         stub_request(:get, endpoint)
-          .with(headers: headers('X-AccessToken' => token))
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+          )
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
         user = GunBroker::User.new(username, token: token)
@@ -158,7 +185,10 @@ describe GunBroker::User::ItemsDelegate do
     context 'on success' do
       it 'returns sold Items' do
         stub_request(:get, endpoint)
-          .with(headers: headers('X-AccessToken' => token))
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+          )
           .to_return(body: response_fixture('items'))
 
         user = GunBroker::User.new(username, token: token)
@@ -170,7 +200,10 @@ describe GunBroker::User::ItemsDelegate do
     context 'on failure' do
       it 'raises an exception' do
         stub_request(:get, endpoint)
-          .with(headers: headers('X-AccessToken' => token))
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+          )
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
         user = GunBroker::User.new(username, token: token)
@@ -185,7 +218,10 @@ describe GunBroker::User::ItemsDelegate do
     context 'on success' do
       it 'returns unsold Items' do
         stub_request(:get, endpoint)
-          .with(headers: headers('X-AccessToken' => token))
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+          )
           .to_return(body: response_fixture('items'))
 
         user = GunBroker::User.new(username, token: token)
@@ -197,7 +233,10 @@ describe GunBroker::User::ItemsDelegate do
     context 'on failure' do
       it 'raises an exception' do
         stub_request(:get, endpoint)
-          .with(headers: headers('X-AccessToken' => token))
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+          )
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
         user = GunBroker::User.new(username, token: token)
@@ -212,7 +251,10 @@ describe GunBroker::User::ItemsDelegate do
     context 'on success' do
       it 'returns won Items' do
         stub_request(:get, endpoint)
-          .with(headers: headers('X-AccessToken' => token))
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+          )
           .to_return(body: response_fixture('items'))
 
         user = GunBroker::User.new(username, token: token)
@@ -224,7 +266,10 @@ describe GunBroker::User::ItemsDelegate do
     context 'on failure' do
       it 'raises an exception' do
         stub_request(:get, endpoint)
-          .with(headers: headers('X-AccessToken' => token))
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+          )
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
         user = GunBroker::User.new(username, token: token)
