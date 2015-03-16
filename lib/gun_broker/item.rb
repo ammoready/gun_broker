@@ -54,7 +54,11 @@ module GunBroker
 
     # @return [String] GunBroker.com URL for this Item.
     def url
-      "http://www.gunbroker.com/Auction/ViewItem.aspx?Item=#{id}"
+      if GunBroker.sandbox
+        "http://www.sandbox.gunbroker.com/Auction/ViewItem.aspx?Item=#{id}"
+      else
+        "http://www.gunbroker.com/Auction/ViewItem.aspx?Item=#{id}"
+      end
     end
 
     # @param key [String] An Item attribute name (from the JSON response).
