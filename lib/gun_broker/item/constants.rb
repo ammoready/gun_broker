@@ -34,8 +34,8 @@ module GunBroker
         13 => '30 day money back guarantee including the cost of shipping',
       }
 
-      # How long before the listing ends.
-      LISTING_DURATION = {
+      # How long an auction listing should last.
+      AUCTION_DURATION = {
         1  => 'One day',
         3  => 'Three days',
         5  => 'Five days',
@@ -46,6 +46,10 @@ module GunBroker
         12 => 'Twelve days',
         13 => 'Thirteen days',
         14 => 'Fourteen days',
+      }
+
+      # How long fixed price listing should last.
+      FIXED_PRICE_DURATION = {
         30 => 'Thirty days (Fixed price items only)',
         60 => 'Sixty days (Fixed price items only)',
         90 => 'Ninety days (Fixed price items only)',

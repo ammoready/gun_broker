@@ -14,8 +14,12 @@ describe GunBroker::Item::Constants do
     expect(GunBroker::Item::INSPECTION_PERIOD).to be_a(Hash)
   end
 
-  it 'has a LISTING_DURATION hash' do
-    expect(GunBroker::Item::LISTING_DURATION).to be_a(Hash)
+  it 'has a AUCTION_DURATION hash' do
+    expect(GunBroker::Item::AUCTION_DURATION).to be_a(Hash)
+  end
+
+  it 'has a FIXED_PRICE_DURATION hash' do
+    expect(GunBroker::Item::FIXED_PRICE_DURATION).to be_a(Hash)
   end
 
   it 'has a PAYMENT_METHODS hash' do
