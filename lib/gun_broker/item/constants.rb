@@ -50,9 +50,9 @@ module GunBroker
 
       # How long fixed price listing should last.
       FIXED_PRICE_DURATION = {
-        30 => 'Thirty days (Fixed price items only)',
-        60 => 'Sixty days (Fixed price items only)',
-        90 => 'Ninety days (Fixed price items only)',
+        30 => 'Thirty days',
+        60 => 'Sixty days',
+        90 => 'Ninety days',
       }
 
       # The payment methods accepted by the seller for this Item.
