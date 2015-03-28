@@ -7,12 +7,19 @@ module GunBroker
 
       include GunBroker::TokenHeader
 
+      # Constants to use with the `SellingStatus` param.
+      SELLING_STATUS = {
+        both:        0,
+        selling:     1,
+        not_selling: 2,
+      }
+
       # @param user [User] A {User} instance to scope items by.
       def initialize(user)
         @user = user
       end
 
-      # Returns all the User's items.
+      # Returns all the User's items (both selling and not selling).
       # @note {API#get! GET} /Items
       # @raise [GunBroker::Error::NotAuthorized] If the {User#token} isn't valid.
       # @raise [GunBroker::Error::RequestError] If there's an issue with the request (usually a `5xx` response).
@@ -20,6 +27,7 @@ module GunBroker
       def all
         response = GunBroker::API.get('/Items', {
           'SellerName' => @user.username,
+          'SellingStatus' => SELLING_STATUS[:both],
           'PageSize' => GunBroker::API::PAGE_SIZE
         }, token_header(@user.token))
         items_from_results(response['results'])
@@ -82,6 +90,20 @@ module GunBroker
       # @return [Array<Item>]
       def not_won
         response = GunBroker::API.get('/ItemsNotWon', {
+          'PageSize' => GunBroker::API::PAGE_SIZE
+        }, token_header(@user.token))
+        items_from_results(response['results'])
+      end
+
+      # Returns Items that are currently selling.
+      # @note {API#get! GET} /Items
+      # @raise [GunBroker::Error::NotAuthorized] If the {User#token} isn't valid.
+      # @raise [GunBroker::Error::RequestError] If there's an issue with the request (usually a `5xx` response).
+      # @return [Array<Item>]
+      def selling
+        response = GunBroker::API.get('/Items', {
+          'SellerName' => @user.username,
+          'SellingStatus' => SELLING_STATUS[:selling],
           'PageSize' => GunBroker::API::PAGE_SIZE
         }, token_header(@user.token))
         items_from_results(response['results'])

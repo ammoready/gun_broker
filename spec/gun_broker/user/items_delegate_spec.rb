@@ -17,6 +17,7 @@ describe GunBroker::User::ItemsDelegate do
             headers: headers('X-AccessToken' => token),
             query: {
               'SellerName' => user.username,
+              'SellingStatus' => GunBroker::User::ItemsDelegate::SELLING_STATUS[:both],
               'PageSize' => GunBroker::API::PAGE_SIZE
             }
           )
@@ -34,6 +35,7 @@ describe GunBroker::User::ItemsDelegate do
             headers: headers('X-AccessToken' => token),
             query: {
               'SellerName' => user.username,
+              'SellingStatus' => GunBroker::User::ItemsDelegate::SELLING_STATUS[:both],
               'PageSize' => GunBroker::API::PAGE_SIZE
             }
           )
@@ -89,6 +91,7 @@ describe GunBroker::User::ItemsDelegate do
           headers: headers('X-AccessToken' => token),
           query: {
             'SellerName' => user.username,
+            'SellingStatus' => GunBroker::User::ItemsDelegate::SELLING_STATUS[:both],
             'PageSize' => GunBroker::API::PAGE_SIZE
           }
         )
@@ -110,6 +113,7 @@ describe GunBroker::User::ItemsDelegate do
           headers: headers('X-AccessToken' => token),
           query: {
             'SellerName' => user.username,
+            'SellingStatus' => GunBroker::User::ItemsDelegate::SELLING_STATUS[:both],
             'PageSize' => GunBroker::API::PAGE_SIZE
           }
         )
@@ -134,6 +138,7 @@ describe GunBroker::User::ItemsDelegate do
           headers: headers('X-AccessToken' => token),
           query: {
             'SellerName' => user.username,
+            'SellingStatus' => GunBroker::User::ItemsDelegate::SELLING_STATUS[:both],
             'PageSize' => GunBroker::API::PAGE_SIZE
           }
         )
