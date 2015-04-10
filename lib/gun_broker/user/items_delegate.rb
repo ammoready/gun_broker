@@ -148,7 +148,7 @@ module GunBroker
       # @return [GunBroker::Item] The updated Item instance.
       def update!(item_id, attributes = {})
         GunBroker::API.put("/Items/#{item_id}", attributes, token_header(@user.token))
-        GunBroker::Item.find(item_id)
+        GunBroker::Item.find!(item_id)
       end
 
       # Items the User has won.
