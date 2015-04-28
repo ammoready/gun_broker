@@ -62,6 +62,15 @@ module GunBroker
     end
     alias_method :revoke_access_token!, :deauthenticate!
 
+    # Returns contact information for the given `buyer_id` (GunBroker User ID).
+    # The User *must* be involved in a transaction for the API method to return a response.
+    # @param buyer_id [Integer, String] GunBroker user ID.
+    # @raise (see #contact_info)
+    # @return (see #contact_info)
+    def buyer_info(buyer_id)
+      GunBroker::API.get('/Users/ContactInfo', { 'UserID' => buyer_id }, token_header(@token))
+    end
+
     # Returns the User's contact information.
     # @note {API#get! GET} /Users/ContactInfo
     # @raise [GunBroker::Error::RequestError] If there's an issue with the request (usually a `5xx` response).

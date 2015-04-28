@@ -171,6 +171,27 @@ describe GunBroker::User do
     end
   end
 
+  context '#buyer_info' do
+    let(:endpoint) { [GunBroker::API::ROOT_URL, '/Users/ContactInfo'].join }
+
+    context 'on success' do
+      it 'returns a contact info hash' do
+        user = GunBroker::User.new(username, token: token)
+        buyer_id = 123
+
+        stub_request(:get, endpoint)
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 'UserID' => buyer_id }
+          )
+          .to_return(body: response_fixture('contact_info'))
+
+        buyer_info = JSON.parse(response_fixture('contact_info'))
+        expect(user.buyer_info(buyer_id)['email']).to eq(buyer_info['email'])
+      end
+    end
+  end
+
   context '#contact_info' do
     let(:endpoint) { [GunBroker::API::ROOT_URL, '/Users/ContactInfo'].join }
 
