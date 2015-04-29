@@ -29,5 +29,13 @@ module GunBroker
       @data
     end
 
+    # Like Hash#fetch
+    # @param [Object] A key from the response JSON.
+    # @raise [KeyError] If `key` is not in the response.
+    # @return [Object] The value for `key`.
+    def fetch(key)
+      @data.fetch(key)
+    end
+
   end
 end
