@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["oshuma@gmail.com"]
   spec.summary       = %q{GunBroker.com API Ruby library.}
   spec.description   = %q{}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/ammoready/gun_broker"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
