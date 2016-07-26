@@ -134,8 +134,8 @@ module GunBroker
         http.ciphers = ['RC4-SHA']
         http.request(request)
       end
-    rescue Errno::ETIMEDOUT => e
-      raise GunBroker::Error::TimeoutError.new("waited for #{GunBroker.timeout} seconds with no response - #{e.inspect}")
+    rescue Net::ReadTimeout => e
+      raise GunBroker::Error::TimeoutError.new("waited for #{GunBroker.timeout} seconds with no response (#{uri}) #{e.inspect}")
     end
 
     def uri
