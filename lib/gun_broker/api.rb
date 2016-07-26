@@ -124,18 +124,24 @@ module GunBroker
 
       @headers.each { |header, value| request[header] = value }
 
-      options = {
+      # using std-lib Timeout module
+      # The GunBroker API is so fickle that the 'read_timeout' option might never even get a chance
+      Timeout.timeout(GunBroker.timeout) do
+        Net::HTTP.start(uri.host, uri.port, net_http_options) do |http|
+          http.ssl_version = :TLSv1
+          http.ciphers = ['RC4-SHA']
+          http.request(request)
+        end
+      end
+    rescue Timeout::Error, Net::ReadTimeout => e
+      raise GunBroker::Error::TimeoutError.new("waited for #{GunBroker.timeout} seconds with no response (#{uri}) #{e.inspect}")
+    end
+
+    def net_http_options
+      {
         use_ssl: uri.scheme == 'https',
         read_timeout: GunBroker.timeout
       }
-
-      Net::HTTP.start(uri.host, uri.port, options) do |http|
-        http.ssl_version = :TLSv1
-        http.ciphers = ['RC4-SHA']
-        http.request(request)
-      end
-    rescue Net::ReadTimeout => e
-      raise GunBroker::Error::TimeoutError.new("waited for #{GunBroker.timeout} seconds with no response (#{uri}) #{e.inspect}")
     end
 
     def uri
