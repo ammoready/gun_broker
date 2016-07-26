@@ -124,11 +124,18 @@ module GunBroker
 
       @headers.each { |header, value| request[header] = value }
 
-      Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+      options = {
+        use_ssl: uri.scheme == 'https',
+        read_timeout: GunBroker.timeout
+      }
+
+      Net::HTTP.start(uri.host, uri.port, options) do |http|
         http.ssl_version = :TLSv1
         http.ciphers = ['RC4-SHA']
         http.request(request)
       end
+    rescue Errno::ETIMEDOUT => e
+      raise GunBroker::Error::TimeoutError.new("waited for #{GunBroker.timeout} seconds with no response - #{e.inspect}")
     end
 
     def uri

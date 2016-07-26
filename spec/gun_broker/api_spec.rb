@@ -11,6 +11,7 @@ describe GunBroker::API do
 
   before(:all) do
     GunBroker.dev_key = 'test-dev-key'
+    GunBroker.timeout = 1
   end
 
   it 'has a ROOT_URL constant' do

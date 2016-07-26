@@ -56,4 +56,21 @@ describe GunBroker do
     end
   end
 
+  context '.timeout' do
+    before(:all) do
+      GunBroker.sandbox = true
+      GunBroker.dev_key = 'test-dev-key'
+    end
+
+    it 'sets @@timeout' do
+      GunBroker.timeout = 15
+      expect(GunBroker.class_variable_get(:@@timeout)).to eq(15)
+    end
+
+    it 'returns @@timeout' do
+      GunBroker.timeout = 15
+      expect(GunBroker.timeout).to eq(15)
+    end
+  end
+
 end
