@@ -51,6 +51,18 @@ module GunBroker
     GunBroker::API.get('/GunBrokerTime')
   end
 
+  # Determines how long to wait on the API until raising a GunBroker::Error::TimeoutError.
+  # @param value [Integer]
+  def self.timeout=(value)
+    @@timeout = value
+  end
+
+  # Amount (in seconds) to wait before raising a GunBroker::Error::TimeoutError
+  # @return [Integer] Defaults to `30`.
+  def self.timeout
+    defined?(@@timeout) ? @@timeout : 30
+  end
+
   private
 
   def self.dev_key_present?
