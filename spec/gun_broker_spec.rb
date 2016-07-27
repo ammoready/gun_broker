@@ -33,6 +33,7 @@ describe GunBroker do
     it 'sets @@sandbox to true' do
       GunBroker.sandbox = true
       expect(GunBroker.sandbox).to eq(true)
+      expect(GunBroker.sandbox?).to eq(true)
     end
   end
 

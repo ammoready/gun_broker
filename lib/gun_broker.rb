@@ -36,6 +36,11 @@ module GunBroker
     defined?(@@sandbox) ? @@sandbox : false
   end
 
+  # An alias to {.sandbox} method
+  def self.sandbox?
+    sandbox
+  end
+
   # Returns a hash containing the time on GunBroker's servers in UTC
   # and the current version of the GunBroker API.
   #
