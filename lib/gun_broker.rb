@@ -10,6 +10,21 @@ require 'gun_broker/user'
 
 module GunBroker
 
+  WEB_URL = "https://www.gunbroker.com"
+  WEB_URL_SANDBOX = "https://www.sandbox.gunbroker.com"
+
+  # Sets the developer key obtained from GunBroker.com.
+  # @param api [Boolean] whether to use api endpoint or public website endpoint
+  def self.base_url(api: true)
+    if sandbox?
+      return API::ROOT_URL_SANDBOX if api
+      WEB_URL_SANDBOX
+    else
+      return API::ROOT_URL if api
+      WEB_URL
+    end
+  end
+
   # Sets the developer key obtained from GunBroker.com.
   # @param dev_key [String]
   def self.dev_key=(dev_key)

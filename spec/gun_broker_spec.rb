@@ -6,6 +6,24 @@ describe GunBroker do
     expect(GunBroker::VERSION).to be_a(String)
   end
 
+  context '.base_url' do
+    context 'in sandbox mode' do
+      it 'should return the proper sandbox api url' do
+        GunBroker.sandbox = false
+        expect(GunBroker.base_url).to eq("https://api.gunbroker.com/v1")
+        expect(GunBroker.base_url(api: false)).to eq("https://www.gunbroker.com")
+      end
+    end
+
+    context 'in live mode' do
+      it 'should return the proper api url' do
+        GunBroker.sandbox = true
+        expect(GunBroker.base_url).to eq("https://api.sandbox.gunbroker.com/v1")
+        expect(GunBroker.base_url(api: false)).to eq("https://www.sandbox.gunbroker.com")
+      end
+    end
+  end
+
   context '.dev_key' do
     let(:key) { 'foo' }
 
@@ -26,10 +44,6 @@ describe GunBroker do
   end
 
   context '.sandbox' do
-    it 'defaults to false' do
-      expect(GunBroker.sandbox).to eq(false)
-    end
-
     it 'sets @@sandbox to true' do
       GunBroker.sandbox = true
       expect(GunBroker.sandbox).to eq(true)
