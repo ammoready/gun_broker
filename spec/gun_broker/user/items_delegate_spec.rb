@@ -200,6 +200,22 @@ describe GunBroker::User::ItemsDelegate do
         expect(delegate.sold).not_to be_empty
         expect(delegate.sold.first).to be_a(GunBroker::Item)
       end
+
+      it 'returns one sold item when passed an `ItemID` option' do
+        stub_request(:get, endpoint)
+          .with(
+            headers: headers('X-AccessToken' => token),
+            query: { 
+              'PageSize' => GunBroker::API::PAGE_SIZE,
+              'ItemID'   => '123'
+            }
+          )
+          .to_return(body: response_fixture('item_id'))
+
+        user = GunBroker::User.new(username, token: token)
+        expect(delegate.sold(item_id: 123)).not_to be_empty
+        expect(delegate.sold(item_id: 123).first).to be_a(GunBroker::Item)
+      end
     end
 
     context 'on failure' do

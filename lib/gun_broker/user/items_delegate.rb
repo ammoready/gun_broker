@@ -96,27 +96,35 @@ module GunBroker
       end
 
       # Returns Items that are currently selling.
+      # @param options [Hash] {ItemID=>ItemID}.
       # @note {API#get! GET} /Items
       # @raise [GunBroker::Error::NotAuthorized] If the {User#token} isn't valid.
       # @raise [GunBroker::Error::RequestError] If there's an issue with the request (usually a `5xx` response).
       # @return [Array<Item>]
-      def selling
-        response = GunBroker::API.get('/Items', {
-          'SellerName' => @user.username,
+      def selling(options = {})
+        parameters = {
+          'ItemID'        => (options[:item_id] || options["ItemID"]),
+          'PageSize'      => GunBroker::API::PAGE_SIZE,
+          'SellerName'    => @user.username,
           'SellingStatus' => SELLING_STATUS[:selling],
-          'PageSize' => GunBroker::API::PAGE_SIZE
-        }, token_header(@user.token))
+        }.delete_if { |k, v| v.nil? }
+
+        response = GunBroker::API.get('/Items', parameters, token_header(@user.token))
         items_from_results(response['results'])
       end
 
       # Items the User has sold.
+      # @param options [Hash] {ItemID=>ItemID}.
       # @note {API#get! GET} /ItemsSold
       # @raise (see #all)
       # @return [Array<Item>]
-      def sold
-        response = GunBroker::API.get('/ItemsSold', {
-          'PageSize' => GunBroker::API::PAGE_SIZE
-        }, token_header(@user.token))
+      def sold(options = {})
+        parameters = {
+          'PageSize' => GunBroker::API::PAGE_SIZE,
+          'ItemID'   => (options[:item_id] || options["ItemID"]),
+        }.delete_if { |k, v| v.nil? }
+
+        response = GunBroker::API.get('/ItemsSold', parameters, token_header(@user.token))
         items_from_results(response['results'])
       end
 
@@ -124,10 +132,13 @@ module GunBroker
       # @note {API#get! GET} /ItemsUnsold
       # @raise (see #all)
       # @return [Array<Item>]
-      def unsold
-        response = GunBroker::API.get('/ItemsUnsold', {
-          'PageSize' => GunBroker::API::PAGE_SIZE
-        }, token_header(@user.token))
+      def unsold(options = {})
+        parameters = {
+          'PageSize' => GunBroker::API::PAGE_SIZE,
+          'ItemID'   => (options[:item_id] || options["ItemID"]),
+        }.delete_if { |k, v| v.nil? }
+
+        response = GunBroker::API.get('/ItemsUnsold', parameters, token_header(@user.token))
         items_from_results(response['results'])
       end
 
