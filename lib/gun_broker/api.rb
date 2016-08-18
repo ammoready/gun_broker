@@ -127,7 +127,7 @@ module GunBroker
       # using std-lib Timeout module
       # The GunBroker API is so fickle that the 'read_timeout' option might never even get a chance
       Timeout.timeout(GunBroker.timeout) do
-        Net::HTTP.start(uri.host, uri.port, net_http_options) do |http|
+        net_http_class.start(uri.host, uri.port, net_http_options) do |http|
           http.ssl_version = :TLSv1
           http.ciphers = ['RC4-SHA']
           http.request(request)
@@ -135,6 +135,15 @@ module GunBroker
       end
     rescue Timeout::Error, Net::ReadTimeout => e
       raise GunBroker::Error::TimeoutError.new("waited for #{GunBroker.timeout} seconds with no response (#{uri}) #{e.inspect}")
+    end
+
+    def net_http_class
+      if GunBroker.proxy_url?
+        proxy_uri = URI.parse(GunBroker.proxy_url)
+        Net::HTTP::Proxy(proxy_uri.host, proxy_uri.port, proxy_uri.user, proxy_uri.password)
+      else
+        Net::HTTP
+      end
     end
 
     def net_http_options
