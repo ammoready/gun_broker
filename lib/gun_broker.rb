@@ -54,7 +54,7 @@ module GunBroker
   # Convenience method for finding out if a proxy_url has been set
   # @return [Boolean] Defaults to `false`.
   def self.proxy_url?
-    !! defined?(@@proxy_url) || false
+    defined?(@@proxy_url) && ! @@proxy_url.nil? || false
   end
 
   # Determines if this library will use the production API or the 'sandbox' API.
