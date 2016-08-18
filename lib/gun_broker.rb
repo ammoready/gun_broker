@@ -27,8 +27,8 @@ module GunBroker
 
   # Sets the developer key obtained from GunBroker.com.
   # @param dev_key [String]
-  def self.dev_key=(dev_key)
-    @@dev_key = dev_key
+  def self.dev_key=(_dev_key)
+    @@dev_key = _dev_key
   end
 
   # Returns the set developer key, or raises GunBroker::Error if not set.
@@ -39,10 +39,28 @@ module GunBroker
     @@dev_key
   end
 
+  # Set URL for remote proxy (including host, port, user, and password)
+  # @return [String] Defaults to `nil`.
+  def self.proxy_url=(_proxy_url)
+    @@proxy_url = _proxy_url
+  end
+
+  # Fully-qualified URL for remote proxy (including host, port, user, and password)
+  # @return [String] Defaults to `nil`.
+  def self.proxy_url
+    defined?(@@proxy_url) ? @@proxy_url : nil
+  end
+
+  # Convenience method for finding out if a proxy_url has been set
+  # @return [Boolean] Defaults to `false`.
+  def self.proxy_url?
+    !! defined?(@@proxy_url) || false
+  end
+
   # Determines if this library will use the production API or the 'sandbox' API.
   # @param sandbox [Boolean]
-  def self.sandbox=(sandbox)
-    @@sandbox = sandbox
+  def self.sandbox=(_sandbox)
+    @@sandbox = _sandbox
   end
 
   # If `true`, this library will use the 'sandbox' GunBroker API.
