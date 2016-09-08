@@ -7,13 +7,6 @@ module GunBroker
 
       include GunBroker::TokenHeader
 
-      # Constants to use with the `SellingStatus` param.
-      SELLING_STATUS = {
-        both:        0,
-        selling:     1,
-        not_selling: 2,
-      }
-
       # @param user [User] A {User} instance to scope items by.
       def initialize(user)
         @user = user
@@ -25,9 +18,9 @@ module GunBroker
       # @raise [GunBroker::Error::RequestError] If there's an issue with the request (usually a `5xx` response).
       # @return [Array<Item>]
       def all
+        # NOTE: this endpoint will not return items that were sold
         response = GunBroker::API.get('/Items', {
           'SellerName' => @user.username,
-          'SellingStatus' => SELLING_STATUS[:both],
           'PageSize' => GunBroker::API::PAGE_SIZE
         }, token_header(@user.token))
         items_from_results(response['results'])
@@ -106,7 +99,6 @@ module GunBroker
           'ItemID'        => (options[:item_id] || options["ItemID"]),
           'PageSize'      => GunBroker::API::PAGE_SIZE,
           'SellerName'    => @user.username,
-          'SellingStatus' => SELLING_STATUS[:selling],
         }.delete_if { |k, v| v.nil? }
 
         response = GunBroker::API.get('/Items', parameters, token_header(@user.token))
