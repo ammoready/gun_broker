@@ -122,7 +122,8 @@ module GunBroker
 
     def get_response(request)
       request['Content-Type'] = 'application/json'
-      request['X-DevKey'] = GunBroker.dev_key
+      request['X-DevKey']     = GunBroker.dev_key
+      request["User-Agent"]   = USER_AGENT
 
       @headers.each { |header, value| request[header] = value }
 
@@ -130,7 +131,6 @@ module GunBroker
       # The GunBroker API is so fickle that the 'read_timeout' option might never even get a chance
       Timeout.timeout(GunBroker.timeout) do
         net_http_class.start(uri.host, uri.port, net_http_options) do |http|
-          http.initialize_http_header({ 'User-Agent' => USER_AGENT })
           http.ssl_version = :TLSv1
           http.ciphers = ['RC4-SHA']
           http.request(request)
