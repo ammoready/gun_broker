@@ -15,6 +15,8 @@ module GunBroker
     # Used to return the maximum number of results from paginated responses.
     PAGE_SIZE = 300
 
+    USER_AGENT = "gun_broker rubygems.org/gems/gun_broker v(#{GunBroker::VERSION})"
+
     # @param path [String] The requested API endpoint.
     # @param params [Hash] (optional) URL params for GET requests; form params for POST request.
     # @param headers [Hash] (optional) Additional headers sent with the request.
@@ -128,6 +130,7 @@ module GunBroker
       # The GunBroker API is so fickle that the 'read_timeout' option might never even get a chance
       Timeout.timeout(GunBroker.timeout) do
         net_http_class.start(uri.host, uri.port, net_http_options) do |http|
+          http.initialize_http_header({ 'User-Agent' => USER_AGENT })
           http.ssl_version = :TLSv1
           http.ciphers = ['RC4-SHA']
           http.request(request)
