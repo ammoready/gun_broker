@@ -15,6 +15,8 @@ module GunBroker
     # Used to return the maximum number of results from paginated responses.
     PAGE_SIZE = 300
 
+    USER_AGENT = "gun_broker rubygems.org/gems/gun_broker v(#{GunBroker::VERSION})"
+
     # @param path [String] The requested API endpoint.
     # @param params [Hash] (optional) URL params for GET requests; form params for POST request.
     # @param headers [Hash] (optional) Additional headers sent with the request.
@@ -120,7 +122,8 @@ module GunBroker
 
     def get_response(request)
       request['Content-Type'] = 'application/json'
-      request['X-DevKey'] = GunBroker.dev_key
+      request['X-DevKey']     = GunBroker.dev_key
+      request["User-Agent"]   = USER_AGENT
 
       @headers.each { |header, value| request[header] = value }
 
