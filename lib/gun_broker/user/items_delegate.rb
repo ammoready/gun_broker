@@ -60,7 +60,9 @@ module GunBroker
       # @return [Item] Returns the Item or `nil` if no Item found.
       def find(item_id)
         # HACK: This has to filter through `#all`, since the GunBroker API currently has no way to scope the `/Items/{itemID}` endpoint by user.
-        if all.select { |item| item.id.to_s == item_id.to_s }.first
+        @all ||= all
+
+        if @all.select { |item| item.id.to_s == item_id.to_s }.first
           GunBroker::Item.find(item_id)
         else
           nil
