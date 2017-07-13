@@ -19,29 +19,10 @@ module GunBroker
       # @return [Array<Item>]
       def all
         # NOTE: this endpoint will not return items that were sold
-        request_params = {
-          'SellerName' => @user.username,
-          'PageSize' => GunBroker::API::PAGE_SIZE
-        }
-        response = GunBroker::API.get('/Items', request_params, token_header(@user.token))
-        pages = (response['count'] / GunBroker::API::PAGE_SIZE.to_f).ceil
+        endpoint = :Items
+        params = { 'SellerName' => @user.username }
 
-        if pages > 1
-          _items_from_results = items_from_results(response['results'])
-
-          pages.times do |page|
-            page += 1
-            next if page == 1
-
-            request_params.merge!({ 'PageIndex' => page })
-            response = GunBroker::API.get('/Items', request_params, token_header(@user.token))
-            _items_from_results.concat(items_from_results(response['results']))
-          end
-
-          _items_from_results
-        else
-          items_from_results(response['results'])
-        end
+        fetch_items(endpoint, params)
       end
 
       # Returns all the items the User has bid on.
@@ -49,10 +30,9 @@ module GunBroker
       # @raise (see #all)
       # @return [Array<Item>]
       def bid_on
-        response = GunBroker::API.get('/ItemsBidOn', {
-          'PageSize' => GunBroker::API::PAGE_SIZE
-        }, token_header(@user.token))
-        items_from_results(response['results'])
+        endpoint = :ItemsBidOn
+
+        fetch_items(endpoint)
       end
 
       # Sends a multipart/form-data POST request to create an Item with the given `attributes`.
@@ -102,10 +82,9 @@ module GunBroker
       # @raise (see #all)
       # @return [Array<Item>]
       def not_won
-        response = GunBroker::API.get('/ItemsNotWon', {
-          'PageSize' => GunBroker::API::PAGE_SIZE
-        }, token_header(@user.token))
-        items_from_results(response['results'])
+        endpoint = :ItemsNotWon
+
+        fetch_items(endpoint)
       end
 
       # Returns Items that are currently selling.
@@ -115,14 +94,13 @@ module GunBroker
       # @raise [GunBroker::Error::RequestError] If there's an issue with the request (usually a `5xx` response).
       # @return [Array<Item>]
       def selling(options = {})
-        parameters = {
+        endpoint = :Items
+        params = {
           'ItemID'        => (options[:item_id] || options["ItemID"]),
-          'PageSize'      => GunBroker::API::PAGE_SIZE,
           'SellerName'    => @user.username,
         }.delete_if { |k, v| v.nil? }
 
-        response = GunBroker::API.get('/Items', parameters, token_header(@user.token))
-        items_from_results(response['results'])
+        fetch_items(endpoint, params)
       end
 
       # Items the User has sold.
@@ -131,13 +109,12 @@ module GunBroker
       # @raise (see #all)
       # @return [Array<Item>]
       def sold(options = {})
-        parameters = {
-          'PageSize' => GunBroker::API::PAGE_SIZE,
-          'ItemID'   => (options[:item_id] || options["ItemID"]),
+        endpoint = :ItemsSold
+        params = {
+          'ItemID'   => (options[:item_id] || options["ItemID"])
         }.delete_if { |k, v| v.nil? }
 
-        response = GunBroker::API.get('/ItemsSold', parameters, token_header(@user.token))
-        items_from_results(response['results'])
+        fetch_items(endpoint, params)
       end
 
       # Items that were listed, but not sold.
@@ -145,13 +122,12 @@ module GunBroker
       # @raise (see #all)
       # @return [Array<Item>]
       def unsold(options = {})
-        parameters = {
-          'PageSize' => GunBroker::API::PAGE_SIZE,
-          'ItemID'   => (options[:item_id] || options["ItemID"]),
+        endpoint = :ItemsUnsold
+        params = {
+          'ItemID'   => (options[:item_id] || options["ItemID"])
         }.delete_if { |k, v| v.nil? }
 
-        response = GunBroker::API.get('/ItemsUnsold', parameters, token_header(@user.token))
-        items_from_results(response['results'])
+        fetch_items(endpoint, params)
       end
 
       # Updates an {Item} with the given attributes.
@@ -179,13 +155,36 @@ module GunBroker
       # @raise (see #all)
       # @return [Array<Item>]
       def won
-        response = GunBroker::API.get('/ItemsWon', {
-          'PageSize' => GunBroker::API::PAGE_SIZE
-        }, token_header(@user.token))
-        items_from_results(response['results'])
+        endpoint = :ItemsWon
+
+        fetch_items(endpoint)
       end
 
       private
+
+      def fetch_items(endpoint, params = {})
+        endpoint = ['/', endpoint.to_s].join
+        params.merge!({ 'PageSize' => GunBroker::API::PAGE_SIZE })
+        response = GunBroker::API.get(endpoint, params, token_header(@user.token))
+        pages = (response['count'] / GunBroker::API::PAGE_SIZE.to_f).ceil
+
+        if pages > 1
+          _items_from_results = items_from_results(response['results'])
+
+          pages.times do |page|
+            page += 1
+            next if page == 1
+
+            params.merge!({ 'PageIndex' => page })
+            response = GunBroker::API.get(endpoint, params, token_header(@user.token))
+            _items_from_results.concat(items_from_results(response['results']))
+          end
+
+          _items_from_results
+        else
+          items_from_results(response['results'])
+        end
+      end
 
       def items_from_results(results)
         results.map { |result| GunBroker::Item.new(result) }
