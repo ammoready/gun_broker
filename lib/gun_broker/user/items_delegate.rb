@@ -22,7 +22,7 @@ module GunBroker
         endpoint = :Items
         params = { 'SellerName' => @user.username }
 
-        fetch_items(endpoint, params)
+        @all ||= fetch_items(endpoint, params)
       end
 
       # Returns all the items the User has bid on.
@@ -32,7 +32,7 @@ module GunBroker
       def bid_on
         endpoint = :ItemsBidOn
 
-        fetch_items(endpoint)
+        @bid_on ||= fetch_items(endpoint)
       end
 
       # Sends a multipart/form-data POST request to create an Item with the given `attributes`.
@@ -58,9 +58,7 @@ module GunBroker
       # @return [Item] Returns the Item or `nil` if no Item found.
       def find(item_id)
         # HACK: This has to filter through `#all`, since the GunBroker API currently has no way to scope the `/Items/{itemID}` endpoint by user.
-        @all ||= all
-
-        if @all.select { |item| item.id.to_s == item_id.to_s }.first
+        if all.select { |item| item.id.to_s == item_id.to_s }.first
           GunBroker::Item.find(item_id)
         else
           nil
@@ -84,7 +82,7 @@ module GunBroker
       def not_won
         endpoint = :ItemsNotWon
 
-        fetch_items(endpoint)
+        @not_won ||= fetch_items(endpoint)
       end
 
       # Returns Items that are currently selling.
@@ -100,7 +98,7 @@ module GunBroker
           'SellerName'    => @user.username,
         }.delete_if { |k, v| v.nil? }
 
-        fetch_items(endpoint, params)
+        @selling ||= fetch_items(endpoint, params)
       end
 
       # Items the User has sold.
@@ -114,7 +112,7 @@ module GunBroker
           'ItemID'   => (options[:item_id] || options["ItemID"])
         }.delete_if { |k, v| v.nil? }
 
-        fetch_items(endpoint, params)
+        @sold ||= fetch_items(endpoint, params)
       end
 
       # Items that were listed, but not sold.
@@ -127,7 +125,7 @@ module GunBroker
           'ItemID'   => (options[:item_id] || options["ItemID"])
         }.delete_if { |k, v| v.nil? }
 
-        fetch_items(endpoint, params)
+        @unsold ||= fetch_items(endpoint, params)
       end
 
       # Updates an {Item} with the given attributes.
@@ -157,7 +155,7 @@ module GunBroker
       def won
         endpoint = :ItemsWon
 
-        fetch_items(endpoint)
+        @won ||= fetch_items(endpoint)
       end
 
       private

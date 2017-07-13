@@ -83,7 +83,7 @@ module GunBroker
     # See the {ItemsDelegate} docs.
     # @return [ItemsDelegate]
     def items
-      ItemsDelegate.new(self)
+      @items_delegate ||= ItemsDelegate.new(self)
     end
 
     private
