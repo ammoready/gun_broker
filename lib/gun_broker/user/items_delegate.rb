@@ -19,11 +19,29 @@ module GunBroker
       # @return [Array<Item>]
       def all
         # NOTE: this endpoint will not return items that were sold
-        response = GunBroker::API.get('/Items', {
+        request_params = {
           'SellerName' => @user.username,
           'PageSize' => GunBroker::API::PAGE_SIZE
-        }, token_header(@user.token))
-        items_from_results(response['results'])
+        }
+        response = GunBroker::API.get('/Items', request_params, token_header(@user.token))
+        pages = (response['count'] / GunBroker::API::PAGE_SIZE.to_f).ceil
+
+        if pages > 1
+          _items_from_results = items_from_results(response['results'])
+
+          pages.times do |page|
+            page += 1
+            next if page == 1
+
+            request_params.merge!({ 'PageIndex' => page })
+            response = GunBroker::API.get('/Items', request_params, token_header(@user.token))
+            _items_from_results.concat(items_from_results(response['results']))
+          end
+
+          _items_from_results
+        else
+          items_from_results(response['results'])
+        end
       end
 
       # Returns all the items the User has bid on.
