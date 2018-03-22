@@ -1,5 +1,3 @@
-require 'gun_broker/item/constants'
-
 module GunBroker
   # Represents a page of GunBroker items (listings).
   class ItemsAsPage
