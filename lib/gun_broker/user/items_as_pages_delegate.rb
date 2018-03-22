@@ -24,54 +24,54 @@ module GunBroker
       # @return [Array<ItemsAsPage>]
       def all
         # NOTE: this endpoint will not return items that were sold
-        @all ||= build_pages(:Items, { 'SellerName' => @user.username })
+        @all ||= build_pages_for(:Items, { 'SellerName' => @user.username })
       end
 
       # Returns pages for all items the User has bid on.
       # @note {API#get! GET} /ItemsBidOn
       # @return [Array<ItemsAsPage>]
       def bid_on
-        @bid_on ||= build_pages(:ItemsBidOn)
+        @bid_on ||= build_pages_for(:ItemsBidOn)
       end
 
       # Returns pages for items the User has bid on, but not won.
       # @note {API#get! GET} /ItemsNotWon
       # @return [Array<ItemsAsPage>]
       def not_won
-        @not_won ||= build_pages(:ItemsNotWon)
+        @not_won ||= build_pages_for(:ItemsNotWon)
       end
 
       # Returns pages for items that are currently selling.
       # @note {API#get! GET} /Items
       # @return [Array<ItemsAsPage>]
       def selling
-        @selling ||= build_pages(:Items, { 'SellerName' => @user.username })
+        @selling ||= build_pages_for(:Items, { 'SellerName' => @user.username })
       end
 
       # Returns pages for items the User has sold.
       # @note {API#get! GET} /ItemsSold
       # @return [Array<ItemsAsPage>]
       def sold
-        @sold ||= build_pages(:ItemsSold)
+        @sold ||= build_pages_for(:ItemsSold)
       end
 
       # Returns pages for items that were listed, but not sold.
       # @note {API#get! GET} /ItemsUnsold
       # @return [Array<ItemsAsPage>]
       def unsold
-        @unsold ||= build_pages(:ItemsUnsold)
+        @unsold ||= build_pages_for(:ItemsUnsold)
       end
 
       # Returns pages for items the User has won.
       # @note {API#get! GET} /ItemsWon
       # @return [Array<ItemsAsPage>]
       def won
-        @won ||= build_pages(:ItemsWon)
+        @won ||= build_pages_for(:ItemsWon)
       end
 
       private
 
-      def build_pages(endpoint, params = {})
+      def build_pages_for(endpoint, params = {})
         endpoint = ['/', endpoint.to_s].join
         _token_header = token_header(@user.token)
         response = GunBroker::API.get(endpoint, params.merge({ 'PageSize' => 1 }), _token_header)
