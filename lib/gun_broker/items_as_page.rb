@@ -9,11 +9,11 @@ module GunBroker
 
     # @return [Array<Item>]
     def fetch_items
-      @attributes.params.merge!({
-        'PageIndex' => @attributes.page_index,
-        'PageSize'  => @attributes.page_size
+      @attributes[:params].merge!({
+        'PageIndex' => @attributes[:page_index],
+        'PageSize'  => @attributes[:page_size]
       })
-      response = GunBroker::API.get(@attributes.endpoint, @attributes.params, @attributes.token_header)
+      response = GunBroker::API.get(@attributes[:endpoint], @attributes[:params], @attributes[:token_header])
 
       response.map { |result| GunBroker::Item.new(result) }
     end
