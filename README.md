@@ -114,6 +114,19 @@ GunBroker::Item.find(123)
 To raise a `GunBroker::Error::NotFound` exception if no Item can be found, use `Item.find!`.
 
 
+### GunBroker::ItemsAsPage
+
+Represents a page of items (listings) on GunBroker, allowing for querying to be done in chunks to prevent memory leaks.  The `ItemsAsPage#fetch_items` method fetches the associated items for the given page.
+
+```ruby
+items_as_pages.each do |page_of_items|
+  page_of_items.fetch_items.each do |item|
+    puts item.id
+  end
+end
+```
+
+
 ### GunBroker::Category
 
 Returns GunBroker category responses.  To get an array of all categories, call `Category.all`.
