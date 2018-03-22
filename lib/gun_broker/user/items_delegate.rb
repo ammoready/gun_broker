@@ -19,10 +19,7 @@ module GunBroker
       # @return [Array<Item>]
       def all
         # NOTE: this endpoint will not return items that were sold
-        endpoint = :Items
-        params = { 'SellerName' => @user.username }
-
-        @all ||= fetch_items(endpoint, params)
+        @all ||= fetch_items(:Items, { 'SellerName' => @user.username })
       end
 
       # Returns all the items the User has bid on.
@@ -30,9 +27,7 @@ module GunBroker
       # @raise (see #all)
       # @return [Array<Item>]
       def bid_on
-        endpoint = :ItemsBidOn
-
-        @bid_on ||= fetch_items(endpoint)
+        @bid_on ||= fetch_items(:ItemsBidOn)
       end
 
       # Sends a multipart/form-data POST request to create an Item with the given `attributes`.
@@ -80,9 +75,7 @@ module GunBroker
       # @raise (see #all)
       # @return [Array<Item>]
       def not_won
-        endpoint = :ItemsNotWon
-
-        @not_won ||= fetch_items(endpoint)
+        @not_won ||= fetch_items(:ItemsNotWon)
       end
 
       # Returns Items that are currently selling.
@@ -92,13 +85,12 @@ module GunBroker
       # @raise [GunBroker::Error::RequestError] If there's an issue with the request (usually a `5xx` response).
       # @return [Array<Item>]
       def selling(options = {})
-        endpoint = :Items
         params = {
-          'ItemID'        => (options[:item_id] || options["ItemID"]),
-          'SellerName'    => @user.username,
+          'ItemID'     => (options[:item_id] || options["ItemID"]),
+          'SellerName' => @user.username,
         }.delete_if { |k, v| v.nil? }
 
-        @selling ||= fetch_items(endpoint, params)
+        @selling ||= fetch_items(:Items, params)
       end
 
       # Items the User has sold.
@@ -107,12 +99,11 @@ module GunBroker
       # @raise (see #all)
       # @return [Array<Item>]
       def sold(options = {})
-        endpoint = :ItemsSold
         params = {
-          'ItemID'   => (options[:item_id] || options["ItemID"])
+          'ItemID' => (options[:item_id] || options["ItemID"])
         }.delete_if { |k, v| v.nil? }
 
-        @sold ||= fetch_items(endpoint, params)
+        @sold ||= fetch_items(:ItemsSold, params)
       end
 
       # Items that were listed, but not sold.
@@ -120,12 +111,11 @@ module GunBroker
       # @raise (see #all)
       # @return [Array<Item>]
       def unsold(options = {})
-        endpoint = :ItemsUnsold
         params = {
-          'ItemID'   => (options[:item_id] || options["ItemID"])
+          'ItemID' => (options[:item_id] || options["ItemID"])
         }.delete_if { |k, v| v.nil? }
 
-        @unsold ||= fetch_items(endpoint, params)
+        @unsold ||= fetch_items(:ItemsUnsold, params)
       end
 
       # Updates an {Item} with the given attributes.
@@ -153,9 +143,7 @@ module GunBroker
       # @raise (see #all)
       # @return [Array<Item>]
       def won
-        endpoint = :ItemsWon
-
-        @won ||= fetch_items(endpoint)
+        @won ||= fetch_items(:ItemsWon)
       end
 
       private
