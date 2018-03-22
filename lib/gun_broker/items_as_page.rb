@@ -15,7 +15,7 @@ module GunBroker
       })
       response = GunBroker::API.get(@attributes[:endpoint], @attributes[:params], @attributes[:token_header])
 
-      response.map { |result| GunBroker::Item.new(result) }
+      response['results'].map { |result| GunBroker::Item.new(result) }
     end
 
   end
