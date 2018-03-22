@@ -24,7 +24,6 @@ module GunBroker
 
       # Returns all the items the User has bid on.
       # @note {API#get! GET} /ItemsBidOn
-      # @raise (see #all)
       # @return [Array<Item>]
       def bid_on
         @bid_on ||= fetch_items(:ItemsBidOn)
@@ -61,7 +60,6 @@ module GunBroker
       end
 
       # Same as {#find} but raises GunBroker::Error::NotFound if no item is found.
-      # @raise (see #all)
       # @raise [GunBroker::Error::NotFound] If the User has no Item with `item_id`.
       # @return [Item] Returns the Item or `nil` if no Item found.
       def find!(item_id)
@@ -72,7 +70,6 @@ module GunBroker
 
       # Items the User has bid on, but not won.
       # @note {API#get! GET} /ItemsNotWon
-      # @raise (see #all)
       # @return [Array<Item>]
       def not_won
         @not_won ||= fetch_items(:ItemsNotWon)
@@ -96,7 +93,6 @@ module GunBroker
       # Items the User has sold.
       # @param options [Hash] {ItemID=>ItemID}.
       # @note {API#get! GET} /ItemsSold
-      # @raise (see #all)
       # @return [Array<Item>]
       def sold(options = {})
         params = {
@@ -108,7 +104,6 @@ module GunBroker
 
       # Items that were listed, but not sold.
       # @note {API#get! GET} /ItemsUnsold
-      # @raise (see #all)
       # @return [Array<Item>]
       def unsold(options = {})
         params = {
@@ -140,7 +135,6 @@ module GunBroker
 
       # Items the User has won.
       # @note {API#get! GET} /ItemsWon
-      # @raise (see #all)
       # @return [Array<Item>]
       def won
         @won ||= fetch_items(:ItemsWon)
@@ -152,16 +146,16 @@ module GunBroker
         endpoint = ['/', endpoint.to_s].join
         params.merge!({ 'PageSize' => GunBroker::API::PAGE_SIZE })
         response = GunBroker::API.get(endpoint, params, token_header(@user.token))
-        pages = (response['count'] / GunBroker::API::PAGE_SIZE.to_f).ceil
+        number_of_pages = (response['count'] / GunBroker::API::PAGE_SIZE.to_f).ceil
 
-        if pages > 1
+        if number_of_pages > 1
           _items_from_results = items_from_results(response['results'])
 
-          pages.times do |page|
-            page += 1
-            next if page == 1
+          number_of_pages.times do |page_number|
+            page_number += 1
+            next if page_number == 1
 
-            params.merge!({ 'PageIndex' => page })
+            params.merge!({ 'PageIndex' => page_number })
             response = GunBroker::API.get(endpoint, params, token_header(@user.token))
             _items_from_results.concat(items_from_results(response['results']))
           end
