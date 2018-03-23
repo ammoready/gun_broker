@@ -1,5 +1,6 @@
 require 'gun_broker/token_header'
 require 'gun_broker/user/items_delegate'
+require 'gun_broker/user/items_as_pages_delegate'
 
 module GunBroker
   # Represents a GunBroker User.
@@ -84,6 +85,13 @@ module GunBroker
     # @return [ItemsDelegate]
     def items
       @items_delegate ||= ItemsDelegate.new(self)
+    end
+
+    # (see ItemsAsPagesDelegate)
+    # See the {ItemsAsPagesDelegate} docs.
+    # @return [ItemsAsPagesDelegate]
+    def items_as_pages(options = {})
+      @items_as_pages_delegate ||= ItemsAsPagesDelegate.new(self, options)
     end
 
     private
