@@ -17,7 +17,8 @@ describe GunBroker::User::ItemsDelegate do
             headers: headers('X-AccessToken' => token),
             query: {
               'SellerName' => user.username,
-              'PageSize' => GunBroker::API::PAGE_SIZE
+              'PageSize'   => GunBroker::API::PAGE_SIZE,
+              'TimeFrame'  => GunBroker::API::TIME_FRAME,
             }
           )
           .to_return(body: response_fixture('items'))
@@ -34,7 +35,8 @@ describe GunBroker::User::ItemsDelegate do
             headers: headers('X-AccessToken' => token),
             query: {
               'SellerName' => user.username,
-              'PageSize' => GunBroker::API::PAGE_SIZE
+              'PageSize'   => GunBroker::API::PAGE_SIZE,
+              'TimeFrame'  => GunBroker::API::TIME_FRAME,
             }
           )
           .to_return(body: response_fixture('not_authorized'), status: 401)
@@ -52,7 +54,10 @@ describe GunBroker::User::ItemsDelegate do
         stub_request(:get, endpoint)
           .with(
             headers: headers('X-AccessToken' => token),
-            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+            query: {
+              'PageSize'  => GunBroker::API::PAGE_SIZE,
+              'TimeFrame' => GunBroker::API::TIME_FRAME,
+            }
           )
           .to_return(body: response_fixture('items'))
 
@@ -67,7 +72,10 @@ describe GunBroker::User::ItemsDelegate do
         stub_request(:get, endpoint)
           .with(
             headers: headers('X-AccessToken' => token),
-            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+            query: {
+              'PageSize'  => GunBroker::API::PAGE_SIZE,
+              'TimeFrame' => GunBroker::API::TIME_FRAME,
+            }
           )
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
@@ -89,7 +97,8 @@ describe GunBroker::User::ItemsDelegate do
           headers: headers('X-AccessToken' => token),
           query: {
             'SellerName' => user.username,
-            'PageSize' => GunBroker::API::PAGE_SIZE
+            'PageSize'   => GunBroker::API::PAGE_SIZE,
+            'TimeFrame'  => GunBroker::API::TIME_FRAME,
           }
         )
         .to_return(body: response_fixture('items'))
@@ -110,7 +119,8 @@ describe GunBroker::User::ItemsDelegate do
           headers: headers('X-AccessToken' => token),
           query: {
             'SellerName' => user.username,
-            'PageSize' => GunBroker::API::PAGE_SIZE
+            'PageSize'   => GunBroker::API::PAGE_SIZE,
+            'TimeFrame'  => GunBroker::API::TIME_FRAME,
           }
         )
         .to_return(body: response_fixture('items'))
@@ -134,7 +144,8 @@ describe GunBroker::User::ItemsDelegate do
           headers: headers('X-AccessToken' => token),
           query: {
             'SellerName' => user.username,
-            'PageSize' => GunBroker::API::PAGE_SIZE
+            'PageSize'   => GunBroker::API::PAGE_SIZE,
+            'TimeFrame'  => GunBroker::API::TIME_FRAME,
           }
         )
         .to_return(body: response_fixture('items'))
@@ -154,7 +165,10 @@ describe GunBroker::User::ItemsDelegate do
         stub_request(:get, endpoint)
           .with(
             headers: headers('X-AccessToken' => token),
-            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+            query: {
+              'PageSize'  => GunBroker::API::PAGE_SIZE,
+              'TimeFrame' => GunBroker::API::TIME_FRAME,
+            }
           )
           .to_return(body: response_fixture('items'))
 
@@ -169,7 +183,10 @@ describe GunBroker::User::ItemsDelegate do
         stub_request(:get, endpoint)
           .with(
             headers: headers('X-AccessToken' => token),
-            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+            query: {
+              'PageSize'  => GunBroker::API::PAGE_SIZE,
+              'TimeFrame' => GunBroker::API::TIME_FRAME,
+            }
           )
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
@@ -187,7 +204,10 @@ describe GunBroker::User::ItemsDelegate do
         stub_request(:get, endpoint)
           .with(
             headers: headers('X-AccessToken' => token),
-            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+            query: {
+              'PageSize'  => GunBroker::API::PAGE_SIZE,
+              'TimeFrame' => GunBroker::API::TIME_FRAME,
+            }
           )
           .to_return(body: response_fixture('items'))
 
@@ -200,9 +220,10 @@ describe GunBroker::User::ItemsDelegate do
         stub_request(:get, endpoint)
           .with(
             headers: headers('X-AccessToken' => token),
-            query: { 
-              'PageSize' => GunBroker::API::PAGE_SIZE,
-              'ItemID'   => '123'
+            query: {
+              'PageSize'  => GunBroker::API::PAGE_SIZE,
+              'ItemID'    => '123',
+              'TimeFrame' => GunBroker::API::TIME_FRAME,
             }
           )
           .to_return(body: response_fixture('item_id'))
@@ -218,7 +239,10 @@ describe GunBroker::User::ItemsDelegate do
         stub_request(:get, endpoint)
           .with(
             headers: headers('X-AccessToken' => token),
-            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+            query: {
+              'PageSize'  => GunBroker::API::PAGE_SIZE,
+              'TimeFrame' => GunBroker::API::TIME_FRAME,
+            }
           )
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
@@ -236,7 +260,10 @@ describe GunBroker::User::ItemsDelegate do
         stub_request(:get, endpoint)
           .with(
             headers: headers('X-AccessToken' => token),
-            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+            query: {
+              'PageSize'  => GunBroker::API::PAGE_SIZE,
+              'TimeFrame' => GunBroker::API::TIME_FRAME,
+            }
           )
           .to_return(body: response_fixture('items'))
 
@@ -251,7 +278,10 @@ describe GunBroker::User::ItemsDelegate do
         stub_request(:get, endpoint)
           .with(
             headers: headers('X-AccessToken' => token),
-            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+            query: {
+              'PageSize'  => GunBroker::API::PAGE_SIZE,
+              'TimeFrame' => GunBroker::API::TIME_FRAME,
+            }
           )
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
@@ -269,7 +299,10 @@ describe GunBroker::User::ItemsDelegate do
         stub_request(:get, endpoint)
           .with(
             headers: headers('X-AccessToken' => token),
-            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+            query: {
+              'PageSize'  => GunBroker::API::PAGE_SIZE,
+              'TimeFrame' => GunBroker::API::TIME_FRAME,
+            }
           )
           .to_return(body: response_fixture('items'))
 
@@ -284,7 +317,10 @@ describe GunBroker::User::ItemsDelegate do
         stub_request(:get, endpoint)
           .with(
             headers: headers('X-AccessToken' => token),
-            query: { 'PageSize' => GunBroker::API::PAGE_SIZE }
+            query: {
+              'PageSize'  => GunBroker::API::PAGE_SIZE,
+              'TimeFrame' => GunBroker::API::TIME_FRAME,
+            }
           )
           .to_return(body: response_fixture('not_authorized'), status: 401)
 
