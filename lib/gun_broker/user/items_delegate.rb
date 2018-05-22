@@ -142,9 +142,13 @@ module GunBroker
 
       private
 
-      def fetch_items(endpoint, params = {})
+      def fetch_items(endpoint, params = {})\
+        params.merge!({
+          'PageSize'  => GunBroker::API::PAGE_SIZE,
+          'TimeFrame' => GunBroker::API::TIME_FRAME,
+        })
+
         endpoint = ['/', endpoint.to_s].join
-        params.merge!({ 'PageSize' => GunBroker::API::PAGE_SIZE })
         response = GunBroker::API.get(endpoint, params, token_header(@user.token))
         number_of_pages = (response['count'] / GunBroker::API::PAGE_SIZE.to_f).ceil
 
