@@ -19,7 +19,7 @@ module GunBroker
       # @return [Array<Item>]
       def all
         # NOTE: this endpoint will not return items that were sold
-        @all ||= fetch_items(:Items, { 'SellerName' => @user.username })
+        @all ||= fetch_items(:Items, params_for(:sellername))
       end
 
       # Returns all the items the User has bid on.
@@ -72,7 +72,7 @@ module GunBroker
       # @note {API#get! GET} /ItemsNotWon
       # @return [Array<Item>]
       def not_won
-        @not_won ||= fetch_items(:ItemsNotWon)
+        @not_won ||= fetch_items(:ItemsNotWon, params_for(:timeframe))
       end
 
       # Returns Items that are currently selling.
@@ -82,10 +82,10 @@ module GunBroker
       # @raise [GunBroker::Error::RequestError] If there's an issue with the request (usually a `5xx` response).
       # @return [Array<Item>]
       def selling(options = {})
-        params = {
-          'ItemID'     => (options[:item_id] || options["ItemID"]),
-          'SellerName' => @user.username,
-        }.delete_if { |k, v| v.nil? }
+        params = [
+          *params_for(:sellername),
+          *params_for(:itemid, options)
+        ].to_h
 
         @selling ||= fetch_items(:Items, params)
       end
@@ -95,20 +95,23 @@ module GunBroker
       # @note {API#get! GET} /ItemsSold
       # @return [Array<Item>]
       def sold(options = {})
-        params = {
-          'ItemID' => (options[:item_id] || options["ItemID"])
-        }.delete_if { |k, v| v.nil? }
+        params = [
+          *params_for(:timeframe),
+          *params_for(:itemid, options)
+        ].to_h
 
         @sold ||= fetch_items(:ItemsSold, params)
       end
 
       # Items that were listed, but not sold.
+      # @param options [Hash] {ItemID=>ItemID}.
       # @note {API#get! GET} /ItemsUnsold
       # @return [Array<Item>]
       def unsold(options = {})
-        params = {
-          'ItemID' => (options[:item_id] || options["ItemID"])
-        }.delete_if { |k, v| v.nil? }
+        params = [
+          *params_for(:timeframe),
+          *params_for(:itemid, options)
+        ].to_h
 
         @unsold ||= fetch_items(:ItemsUnsold, params)
       end
@@ -137,16 +140,14 @@ module GunBroker
       # @note {API#get! GET} /ItemsWon
       # @return [Array<Item>]
       def won
-        @won ||= fetch_items(:ItemsWon)
+        @won ||= fetch_items(:ItemsWon, params_for(:timeframe))
       end
 
       private
 
-      def fetch_items(endpoint, params = {})\
-        params.merge!({
-          'PageSize'  => GunBroker::API::PAGE_SIZE,
-          'TimeFrame' => GunBroker::API::TIME_FRAME,
-        })
+      def fetch_items(endpoint, params = {})
+        cleanup_nil_params(params)
+        params.merge!('PageSize' => GunBroker::API::PAGE_SIZE)
 
         endpoint = ['/', endpoint.to_s].join
         response = GunBroker::API.get(endpoint, params, token_header(@user.token))
@@ -172,6 +173,23 @@ module GunBroker
 
       def items_from_results(results)
         results.map { |result| GunBroker::Item.new(result) }
+      end
+
+      def params_for(key, options = {})
+        case key
+        when :sellername
+          { 'SellerName' => @user.username }
+        when :timeframe
+          { 'TimeFrame' => GunBroker::API::TIME_FRAME_FOR_ALL_RESULTS }
+        when :itemid
+          { 'ItemID' => (options[:item_id] || options["ItemID"]) }
+        else
+          raise GunBroker::Error.new 'Unrecognized `params_for` key.'
+        end
+      end
+
+      def cleanup_nil_params(params)
+        params.delete_if { |k, v| v.nil? }
       end
 
     end

@@ -12,7 +12,6 @@ module GunBroker
       @attributes[:params].merge!({
         'PageIndex' => @attributes[:page_index],
         'PageSize'  => @attributes[:page_size],
-        'TimeFrame' => GunBroker::API::TIME_FRAME,
       })
       response = GunBroker::API.get(@attributes[:endpoint], @attributes[:params], @attributes[:token_header])
 

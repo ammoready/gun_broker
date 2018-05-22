@@ -24,7 +24,7 @@ module GunBroker
       # @return [Array<ItemsAsPage>]
       def all
         # NOTE: this endpoint will not return items that were sold
-        @all ||= build_pages_for(:Items, { 'SellerName' => @user.username })
+        @all ||= build_pages_for(:Items, params_for(:sellername))
       end
 
       # Returns pages for all items the User has bid on.
@@ -38,35 +38,35 @@ module GunBroker
       # @note {API#get! GET} /ItemsNotWon
       # @return [Array<ItemsAsPage>]
       def not_won
-        @not_won ||= build_pages_for(:ItemsNotWon)
+        @not_won ||= build_pages_for(:ItemsNotWon, params_for(:timeframe))
       end
 
       # Returns pages for items that are currently selling.
       # @note {API#get! GET} /Items
       # @return [Array<ItemsAsPage>]
       def selling
-        @selling ||= build_pages_for(:Items, { 'SellerName' => @user.username })
+        @selling ||= build_pages_for(:Items, params_for(:sellername))
       end
 
       # Returns pages for items the User has sold.
       # @note {API#get! GET} /ItemsSold
       # @return [Array<ItemsAsPage>]
       def sold
-        @sold ||= build_pages_for(:ItemsSold)
+        @sold ||= build_pages_for(:ItemsSold, params_for(:timeframe))
       end
 
       # Returns pages for items that were listed, but not sold.
       # @note {API#get! GET} /ItemsUnsold
       # @return [Array<ItemsAsPage>]
       def unsold
-        @unsold ||= build_pages_for(:ItemsUnsold)
+        @unsold ||= build_pages_for(:ItemsUnsold, params_for(:timeframe))
       end
 
       # Returns pages for items the User has won.
       # @note {API#get! GET} /ItemsWon
       # @return [Array<ItemsAsPage>]
       def won
-        @won ||= build_pages_for(:ItemsWon)
+        @won ||= build_pages_for(:ItemsWon, params_for(:timeframe))
       end
 
       private
@@ -93,6 +93,18 @@ module GunBroker
 
         items_as_pages
       end
+
+      def params_for(key)
+        case key
+        when :sellername
+          { 'SellerName' => @user.username }
+        when :timeframe
+          { 'TimeFrame' => GunBroker::API::TIME_FRAME_FOR_ALL_RESULTS }
+        else
+          raise GunBroker::Error.new 'Unrecognized `params_for` key.'
+        end
+      end
+
     end
   end
 end
