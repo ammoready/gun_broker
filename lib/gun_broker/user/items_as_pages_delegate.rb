@@ -99,7 +99,7 @@ module GunBroker
         when :sellername
           { 'SellerName' => @user.username }
         when :timeframe
-          { 'TimeFrame' => GunBroker::API::TIME_FRAME_FOR_ALL_RESULTS }
+          { 'TimeFrame' => GunBroker::API::MAX_ITEMS_TIME_FRAME }
         else
           raise GunBroker::Error.new 'Unrecognized `params_for` key.'
         end

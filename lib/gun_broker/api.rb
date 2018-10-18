@@ -15,8 +15,7 @@ module GunBroker
     # Used to return the maximum number of results from paginated responses.
     PAGE_SIZE = 300
 
-    # Defaults to 12 (View Last 30 Days), so we need to specify 1 (View All Completed) to get everything.
-    TIME_FRAME_FOR_ALL_RESULTS = 1
+    MAX_ITEMS_TIME_FRAME = 1
 
     USER_AGENT = "gun_broker rubygems.org/gems/gun_broker v(#{GunBroker::VERSION})"
 
