@@ -94,6 +94,20 @@ module GunBroker
       @items_as_pages_delegate ||= ItemsAsPagesDelegate.new(self, options)
     end
 
+    # (see OrdersDelegate)
+    # See the {OrdersDelegate} docs.
+    # @return [OrdersDelegate]
+    def orders
+      @orders_delegate ||= OrdersDelegate.new(self)
+    end
+
+    # (see OrdersAsPagesDelegate)
+    # See the {OrdersAsPagesDelegate} docs.
+    # @return [OrdersAsPagesDelegate]
+    def orders_as_pages(options = {})
+      @orders_as_pages_delegate ||= OrdersAsPagesDelegate.new(self, options)
+    end
+
     private
 
     # @return [Boolean] `true` if `@username` is present and either `@password` *or* `@token` is present.
