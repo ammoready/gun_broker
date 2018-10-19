@@ -6,6 +6,7 @@ require 'gun_broker/error'
 require 'gun_broker/feedback'
 require 'gun_broker/item'
 require 'gun_broker/items_as_page'
+require 'gun_broker/order'
 require 'gun_broker/response'
 require 'gun_broker/user'
 
