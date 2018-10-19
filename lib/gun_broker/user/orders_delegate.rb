@@ -22,7 +22,9 @@ module GunBroker
       # @raise [GunBroker::Error::NotFound] If the User has no Order with `order_id`.
       # @return [Order] Returns the Order.
       def find!(order_id)
-        find(order_id) || raise GunBroker::Error::NotFound.new("Couldn't find order with ID '#{order_id}'")
+        order = find(order_id)
+        raise GunBroker::Error::NotFound.new("Couldn't find order with ID '#{order_id}'") if order.nil?
+        order
       end
 
       # Sold Orders for the User.
