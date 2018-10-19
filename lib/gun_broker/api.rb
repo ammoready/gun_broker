@@ -16,6 +16,7 @@ module GunBroker
     PAGE_SIZE = 300
 
     MAX_ITEMS_TIME_FRAME = 1
+    MAX_ORDERS_TIME_FRAME = 7
 
     USER_AGENT = "gun_broker rubygems.org/gems/gun_broker v(#{GunBroker::VERSION})"
 
