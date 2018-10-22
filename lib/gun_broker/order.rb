@@ -8,8 +8,8 @@ module GunBroker
 
     # @param order_id [Integer, String] The ID of the Order to find.
     # @return [Order] An Order instance or `nil` if no Order with `order_id` exists.
-    def self.find(order_id)
-      find!(order_id)
+    def self.find(order_id, params = {}, headers = {})
+      find!(order_id, params, headers)
     rescue GunBroker::Error::NotFound
       nil
     end
@@ -18,8 +18,8 @@ module GunBroker
     # @param (see .find)
     # @raise [GunBroker::Error::NotFound] If no Order with `order_id` exists.
     # @return (see .find)
-    def self.find!(order_id)
-      response = GunBroker::API.get("/Orders/#{order_id}")
+    def self.find!(order_id, params = {}, headers = {})
+      response = GunBroker::API.get("/Orders/#{order_id}", params, headers)
       new(response.body)
     end
 

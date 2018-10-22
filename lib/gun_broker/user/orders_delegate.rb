@@ -18,7 +18,7 @@ module GunBroker
       def find(order_id)
         # HACK: This has to filter through `#sold`, since the GunBroker API currently has no way to scope the `/Orders/{orderID}` endpoint by user.
         if sold.select { |order| order.id.to_s == order_id.to_s }.first
-          GunBroker::Order.find(order_id)
+          GunBroker::Order.find(order_id, nil, token_header(@user.token))
         else
           nil
         end
