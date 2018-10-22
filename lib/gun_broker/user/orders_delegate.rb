@@ -12,10 +12,16 @@ module GunBroker
         @user = user
       end
 
-      # Finds an Order by ID. Calls {Order.find} to get full Order details.
+      # Finds a specific User's Order by ID. Calls {Order.find} to get full Order details.
+      # @raise (see #sold)
       # @return [Order] Returns the Order or `nil` if no Order found.
       def find(order_id)
-        GunBroker::Order.find(order_id)
+        # HACK: This has to filter through `#sold`, since the GunBroker API currently has no way to scope the `/Orders/{orderID}` endpoint by user.
+        if sold.select { |order| order.id.to_s == order_id.to_s }.first
+          GunBroker::Order.find(order_id)
+        else
+          nil
+        end
       end
 
       # Same as {#find} but raises GunBroker::Error::NotFound if no order is found.
