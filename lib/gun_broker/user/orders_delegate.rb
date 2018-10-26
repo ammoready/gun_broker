@@ -16,7 +16,7 @@ module GunBroker
       # @raise (see #sold)
       # @return [Order] Returns the Order or `nil` if no Order found.
       def find(order_id)
-        GunBroker::Order.find(order_id, nil, token_header(@user.token))
+        GunBroker::Order.find(order_id, {}, token_header(@user.token))
       end
 
       # Same as {#find} but raises GunBroker::Error::NotFound if no order is found.
