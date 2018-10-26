@@ -43,6 +43,11 @@ module GunBroker
       @attrs['fflNumber']
     end
 
+    # @return [Array] Item IDs of associated items for this Order.
+    def item_ids
+      @attrs['itemIDs']
+    end
+
     # @return [Hash] Billing info for this Order.
     def bill_to
       {
