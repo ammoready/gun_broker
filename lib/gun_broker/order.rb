@@ -28,14 +28,14 @@ module GunBroker
       @attrs = attrs
     end
 
-    # @return [Integer] The Order ID.
-    def id
-      @attrs['orderID']
-    end
-
     # @return [Hash] Attributes parsed from the JSON response.
     def attributes
       @attrs
+    end
+
+    # @return [Integer] The Order ID.
+    def id
+      @attrs['orderID']
     end
 
     # @return [String] FFL Number (if applicable) for this Order.
@@ -76,8 +76,13 @@ module GunBroker
       }
     end
 
+    # @return [Float] Total shipping amount for this Order.
+    def shipping_total
+      @attrs['shipCost']
+    end
+
     # @return [Float] Total sales tax for this Order.
-    def sales_tax
+    def sales_tax_toal
       @attrs['salesTaxTotal']
     end
 
@@ -86,9 +91,9 @@ module GunBroker
       @attrs['orderTotal']
     end
 
-    # @return [String] Payment method used for this Order.
-    def payment_method
-      @attrs['paymentMethods']
+    # @return [String] Payment methods used for this Order.
+    def payment_methods
+      @attrs['paymentMethod'].values
     end
 
     # @param key [String] An Order attribute name (from the JSON response).
