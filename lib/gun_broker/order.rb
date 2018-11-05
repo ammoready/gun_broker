@@ -82,7 +82,7 @@ module GunBroker
     end
 
     # @return [Float] Total sales tax for this Order.
-    def sales_tax_toal
+    def sales_tax_total
       @attrs['salesTaxTotal']
     end
 
