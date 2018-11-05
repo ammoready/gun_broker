@@ -45,7 +45,7 @@ module GunBroker
 
     # @return [Array] Item IDs of associated items for this Order.
     def item_ids
-      @attrs['itemIDs']
+      (@attrs['items'] || @attrs['orderItemsCollection']).collect { |item| item['itemID'] }
     end
 
     # @return [Hash] Billing info for this Order.
