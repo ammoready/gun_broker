@@ -66,7 +66,7 @@ module GunBroker
           'Carrier' => carrier_key,
         }
 
-        GunBroker::API.put("/Orders/#{order_id}/Shipping", params, token_header(@user.token))
+        GunBroker::API.put("/Orders/#{order_id}/Shipping", cleanup_nil_params(params), token_header(@user.token))
         find!(order_id)
       end
 
