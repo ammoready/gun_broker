@@ -59,7 +59,7 @@ module GunBroker
       # @raise [GunBroker::Error::NotAuthorized] If the {User#token `@user` token} isn't valid.
       # @raise [GunBroker::Error::RequestError] If the Order attributes are not valid or required attributes are missing.
       # @return [GunBroker::Order] The updated Order instance.
-      def submit_shipping!(order_id, tracking_number, carrier_name = '')
+      def submit_shipping!(order_id, tracking_number, carrier_name)
         carrier_key = SHIPPING_CARRIERS.find { |k, v| v.casecmp(carrier_name).zero? }.try(:first)
         params = {
           'TrackingNumber' => tracking_number,
