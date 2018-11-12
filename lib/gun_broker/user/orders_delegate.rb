@@ -1,5 +1,5 @@
 require 'gun_broker/token_header'
-require 'gun_broker/item/constants'
+require 'gun_broker/order/constants'
 
 module GunBroker
   class User
@@ -7,7 +7,7 @@ module GunBroker
     class OrdersDelegate
 
       include GunBroker::TokenHeader
-      include GunBroker::Item::Constants
+      include GunBroker::Order::Constants
 
       # @param user [User] A {User} instance to scope orders by.
       def initialize(user)

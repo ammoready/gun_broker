@@ -1,6 +1,5 @@
 module GunBroker
   class Item
-    # Holds constant values for Item.
     module Constants
 
       # Options for auto-relisting.
@@ -91,14 +90,6 @@ module GunBroker
         4  => 'Buyer pays actual shipping cost',
         8  => 'Buyer pays fixed amount',
         16 => 'Use shipping profile',
-      }
-
-      # The carrier responsible for shipping.
-      # The keys of this hash should be sent as the `carrier` param when updating shipping on an Item.
-      SHIPPING_CARRIERS = {
-        1 => 'FedEx',
-        2 => 'UPS',
-        3 => 'USPS',
       }
 
     end
