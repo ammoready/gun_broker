@@ -1,4 +1,5 @@
 require 'gun_broker/token_header'
+require 'gun_broker/item/constants'
 
 module GunBroker
   class User
@@ -6,6 +7,7 @@ module GunBroker
     class OrdersDelegate
 
       include GunBroker::TokenHeader
+      include GunBroker::Item::Constants
 
       # @param user [User] A {User} instance to scope orders by.
       def initialize(user)
@@ -39,6 +41,33 @@ module GunBroker
         ].to_h
 
         @sold ||= fetch_orders(:OrdersSold, params)
+      end
+
+      # Submits shipping details for an {Order}.
+      # @param (see #submit_shipping!)
+      # @return [GunBroker::Order] The updated Order instance or `false` if update fails.
+      def submit_shipping(*args)
+        submit_shipping!(*args)
+      rescue GunBroker::Error
+        false
+      end
+
+      # Same as {#submit_shipping} but raises exceptions on error.
+      # @param order_id [Integer, String] ID of the Order to update.
+      # @param tracking_number [String] The tracking number of the shipment.
+      # @param carrier_name [String] The name of the carrier of the shipment.
+      # @raise [GunBroker::Error::NotAuthorized] If the {User#token `@user` token} isn't valid.
+      # @raise [GunBroker::Error::RequestError] If the Order attributes are not valid or required attributes are missing.
+      # @return [GunBroker::Order] The updated Order instance.
+      def submit_shipping!(order_id, tracking_number, carrier_name = nil)
+        carrier_key = SHIPPING_CARRIERS.find { |k, v| v.casecmp(carrier_name).zero? }.try(:first)
+        params = {
+          'TrackingNumber' => tracking_number,
+          'Carrier' => carrier_key,
+        }
+
+        GunBroker::API.put("/Orders/#{order_id}/Shipping", params, token_header(@user.token))
+        find!(order_id)
       end
 
       private
