@@ -63,10 +63,31 @@ module GunBroker
         carrier_key = SHIPPING_CARRIERS.find { |k, v| v.casecmp(carrier_name).zero? }.try(:first)
         params = {
           'TrackingNumber' => tracking_number,
-          'Carrier' => carrier_key,
+          'Carrier'        => carrier_key,
         }
 
         GunBroker::API.put("/Orders/#{order_id}/Shipping", cleanup_nil_params(params), token_header(@user.token))
+        find!(order_id)
+      end
+
+      # Sets any of 3 available Order flags.
+      # @param order_id [Integer, String] ID of the Order to update.
+      # @param flags [hash] Keys with boolean values of flags to update on Order.
+      # @raise [GunBroker::Error::NotAuthorized] If the {User#token `@user` token} isn't valid.
+      # @raise [GunBroker::Error::RequestError] If the Order attributes are not valid or required attributes are missing.
+      # @return [GunBroker::Order] The updated Order instance.
+      def set_flags!(order_id, flags = {})
+        unless flags.keys.all? { |k| ACCEPTED_FLAG_KEYS.include?(k) }
+          raise ArgumentError.new("Only accepted keys for flag toggling are #{ACCEPTED_FLAG_KEYS.to_sentence}")
+        end
+
+        params = {
+          'PaymentReceived' => flags[:payment_received],
+          'FFLReceived'     => flags[:ffl_received],
+          'OrderShipped'    => flags[:order_shipped],
+        }
+
+        GunBroker::API.put("/Orders/#{order_id}/Flags", cleanup_nil_params(params), token_header(@user.token))
         find!(order_id)
       end
 

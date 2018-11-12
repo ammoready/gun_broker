@@ -10,6 +10,9 @@ module GunBroker
         3 => 'USPS',
       }
 
+      # The flags that are allowed to be toggled (true/false) on an Order.
+      ACCEPTED_FLAG_KEYS = %i( payment_received ffl_received order_shipped )
+
     end
   end
 end
