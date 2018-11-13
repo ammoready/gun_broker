@@ -96,6 +96,11 @@ module GunBroker
       @attrs['paymentMethod'].values
     end
 
+    # @return [Integer] Status key for this Order.
+    def status_key
+      @attrs['status'].keys.first.to_i
+    end
+
     # @param key [String] An Order attribute name (from the JSON response).
     # @return The value of the given `key` or `nil`.
     def [](key)
