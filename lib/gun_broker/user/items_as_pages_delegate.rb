@@ -37,8 +37,8 @@ module GunBroker
       # Returns pages for items the User has bid on, but not won.
       # @note {API#get! GET} /ItemsNotWon
       # @return [Array<ItemsAsPage>]
-      def not_won
-        @not_won ||= build_pages_for(:ItemsNotWon, params_for(:timeframe))
+      def not_won(options = {})
+        @not_won ||= build_pages_for(:ItemsNotWon, params_for(:timeframe, options))
       end
 
       # Returns pages for items that are currently selling.
@@ -51,22 +51,22 @@ module GunBroker
       # Returns pages for items the User has sold.
       # @note {API#get! GET} /ItemsSold
       # @return [Array<ItemsAsPage>]
-      def sold
-        @sold ||= build_pages_for(:ItemsSold, params_for(:timeframe))
+      def sold(options = {})
+        @sold ||= build_pages_for(:ItemsSold, params_for(:timeframe, options))
       end
 
       # Returns pages for items that were listed, but not sold.
       # @note {API#get! GET} /ItemsUnsold
       # @return [Array<ItemsAsPage>]
-      def unsold
-        @unsold ||= build_pages_for(:ItemsUnsold, params_for(:timeframe))
+      def unsold(options = {})
+        @unsold ||= build_pages_for(:ItemsUnsold, params_for(:timeframe, options))
       end
 
       # Returns pages for items the User has won.
       # @note {API#get! GET} /ItemsWon
       # @return [Array<ItemsAsPage>]
-      def won
-        @won ||= build_pages_for(:ItemsWon, params_for(:timeframe))
+      def won(options = {})
+        @won ||= build_pages_for(:ItemsWon, params_for(:timeframe, options))
       end
 
       private
@@ -94,12 +94,12 @@ module GunBroker
         items_as_pages
       end
 
-      def params_for(key)
+      def params_for(key, options = {})
         case key
         when :sellername
           { 'SellerName' => @user.username }
         when :timeframe
-          { 'TimeFrame' => GunBroker::API::MAX_ITEMS_TIME_FRAME }
+          { 'TimeFrame' => (options[:timeframe] || GunBroker::API::MAX_ITEMS_TIME_FRAME) }
         else
           raise GunBroker::Error.new 'Unrecognized `params_for` key.'
         end
