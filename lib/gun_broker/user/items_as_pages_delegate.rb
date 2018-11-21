@@ -45,7 +45,7 @@ module GunBroker
       # @note {API#get! GET} /Items
       # @return [Array<ItemsAsPage>]
       def selling
-        @selling ||= build_pages_for(:Items, params_for(:sellername))
+        @selling ||= build_pages_for(:ItemsSelling)
       end
 
       # Returns pages for items the User has sold.
