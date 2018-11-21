@@ -71,8 +71,8 @@ module GunBroker
       # Items the User has bid on, but not won.
       # @note {API#get! GET} /ItemsNotWon
       # @return [Array<Item>]
-      def not_won
-        @not_won ||= fetch_items(:ItemsNotWon, params_for(:timeframe))
+      def not_won(options = {})
+        @not_won ||= fetch_items(:ItemsNotWon, params_for(:timeframe, options))
       end
 
       # Returns Items that are currently selling.
@@ -96,7 +96,7 @@ module GunBroker
       # @return [Array<Item>]
       def sold(options = {})
         params = [
-          *params_for(:timeframe),
+          *params_for(:timeframe, options),
           *params_for(:itemid, options)
         ].to_h
 
@@ -109,7 +109,7 @@ module GunBroker
       # @return [Array<Item>]
       def unsold(options = {})
         params = [
-          *params_for(:timeframe),
+          *params_for(:timeframe, options),
           *params_for(:itemid, options)
         ].to_h
 
@@ -139,8 +139,8 @@ module GunBroker
       # Items the User has won.
       # @note {API#get! GET} /ItemsWon
       # @return [Array<Item>]
-      def won
-        @won ||= fetch_items(:ItemsWon, params_for(:timeframe))
+      def won(options = {})
+        @won ||= fetch_items(:ItemsWon, params_for(:timeframe, options))
       end
 
       private
@@ -180,7 +180,7 @@ module GunBroker
         when :sellername
           { 'SellerName' => @user.username }
         when :timeframe
-          { 'TimeFrame' => GunBroker::API::MAX_ITEMS_TIME_FRAME }
+          { 'TimeFrame' => (options[:timeframe] || GunBroker::API::MAX_ITEMS_TIME_FRAME) }
         when :itemid
           { 'ItemID' => (options[:item_id] || options["ItemID"]) }
         else
