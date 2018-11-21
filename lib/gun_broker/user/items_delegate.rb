@@ -82,12 +82,7 @@ module GunBroker
       # @raise [GunBroker::Error::RequestError] If there's an issue with the request (usually a `5xx` response).
       # @return [Array<Item>]
       def selling(options = {})
-        params = [
-          *params_for(:sellername),
-          *params_for(:itemid, options)
-        ].to_h
-
-        @selling ||= fetch_items(:Items, params)
+        @selling ||= fetch_items(:ItemsSelling, params_for(:itemid, options))
       end
 
       # Items the User has sold.
