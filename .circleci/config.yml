@@ -16,8 +16,8 @@ jobs:
       - checkout
 
       - add_ssh_keys:
-        fingerprints:
-          - "7c:7a:23:b2:a3:41:bf:15:7d:1d:75:bb:f2:1f:59:4b"
+          fingerprints:
+            - "7c:7a:23:b2:a3:41:bf:15:7d:1d:75:bb:f2:1f:59:4b"
 
       - run:
           name: Which bundler?
