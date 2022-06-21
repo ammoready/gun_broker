@@ -88,7 +88,7 @@ module GunBroker
 
     # @return [Float] Total sales amount for this Order.
     def order_total
-      @attrs['orderTotal']
+      @attrs['orderTotal'] || @attrs['totalPrice']
     end
 
     # @return [String] Payment methods used for this Order.
